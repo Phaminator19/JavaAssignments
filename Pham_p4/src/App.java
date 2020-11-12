@@ -15,7 +15,7 @@ public class App {
     After he done, the program writes all the data to a file.
 
     The program needs encapsulate item data in a class called TaskItem and list data in a
-    class called TaskList
+    class called TaskList. App class will handle the user interaction.
 
     Pseudocode:
 
@@ -50,8 +50,7 @@ public class App {
         ask the user for a title
               name = read string from user
              if the user enter wrong title return an invalid title string
-            else return a string that said task item succeeds with valid title and let the user input the title
-              again.
+            else return a string that said task item succeeds with valid title set it
 
         ask the user for description
             description = read string from user
@@ -60,7 +59,8 @@ public class App {
             date = read string from user
            if the user enter wrong date return an invalid date string and let the user input the title
               again.
-           else return a string that said task item succeeds with valid date
+           else, set it to "date return a string that said task item is created successfully.
+
 
         Loop back to the menu after done the required inputting;
 
