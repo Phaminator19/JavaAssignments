@@ -142,4 +142,9 @@ public static void main () {
     System.out.println("Hell World");
 }
 
+public void getItem()
+{
+    System.out.println("This is a test");
+}
+
 }
