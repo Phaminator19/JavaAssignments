@@ -107,8 +107,8 @@ public class App {
                         else UserInput = yes
                             return back to the beginning of the loop
 
-                    -if user enter any thing else other those numbers, return a string with Invalid Input
-                    and repeat the prompt
+                -if user enter any thing else other those numbers, return a string with Invalid Input
+                 and repeat the prompt
                 -User choose the task to be mark as completed
                 -Mark the tasks that were chosen by the user with some kind of way
                 -Return to the beginning of the loop;
