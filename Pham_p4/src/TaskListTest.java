@@ -35,11 +35,12 @@ class TaskListTest {
 
     @Test
     public void completingTaskItemFailsWithInvalidIndex() {
+        /*
         List <TaskItem> tasks = new ArrayList<>();
         TaskList m = new TaskList();
         TaskItem elements = new TaskItem();
         App app = new App();
-
+*/
 
 
     }
