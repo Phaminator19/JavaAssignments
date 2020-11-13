@@ -1,19 +1,15 @@
 import org.junit.jupiter.api.Test;
-
-import java.util.InputMismatchException;
-import java.util.Scanner;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class TaskItemTest {
     @Test
     public void creatingTaskItemFailsWithInvalidDueDate(){
-        assertThrows(InvalidDateException.class, () -> new TaskItem("Task #1", "11122019"), "Date is not in the correct format");
+        assertThrows(IllegalArgumentException.class, () -> new TaskItem("Task #1", "11122019"), "Date is not in the correct format");
     }
 
     @Test
     public void creatingTaskItemFailsWithInvalidTitle() {
-        assertThrows(InvalidTitleException.class, () -> new TaskItem("", "11-12-2019"), "Title has less than 1 string");
+        assertThrows(IllegalArgumentException.class, () -> new TaskItem("", "11-12-2019"), "Title has less than 1 string");
     }
 
     @Test
@@ -30,7 +26,7 @@ class TaskItemTest {
 
     @Test
     public void settingTaskItemDueDateFailsWithInvalidDate() {
-        assertThrows(InvalidDateException.class, () -> TaskItem.setDate("1122019"), "Date is not save or set");
+        assertThrows(IllegalArgumentException.class, () -> TaskItem.setDate("1122019"), "Date is not save or set");
     }
 
     @Test
@@ -42,7 +38,7 @@ class TaskItemTest {
 
     @Test
     public void settingTaskItemTitleFailsWithInvalidTitle() {
-        assertThrows(InvalidDateException.class, () -> TaskItem.setTitle(""), "Title is not save or set");
+        assertThrows(IllegalArgumentException.class, () -> TaskItem.setTitle(""), "Title is not save or set");
     }
 
     @Test

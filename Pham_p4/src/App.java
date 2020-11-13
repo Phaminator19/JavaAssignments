@@ -25,6 +25,7 @@ public class App {
     prompt to ask for user input to load an existing list
             - read the input list
             -Print the list onto the output
+            - if the list isn't exist, print the line "The list is empty"
     prompt to quit the program entirely
             -Ask the user if they really want to quit
             - terminate the program if true
