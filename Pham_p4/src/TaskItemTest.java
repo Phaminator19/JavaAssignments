@@ -8,56 +8,50 @@ import static org.junit.jupiter.api.Assertions.*;
 class TaskItemTest {
     @Test
     public void creatingTaskItemFailsWithInvalidDueDate(){
-        TaskItem user = new TaskItem(System.in);
-        System.out.print("Task Due Date (YYYY-MM-DD): ");
-        String date = user.nextLine();
-        assert(TaskItem.getDate()) : "WARNING: Invalid due date; your task is not created " + date;
+        assertThrows(InvalidDateException.class, () -> new TaskItem("Task #1", "11122019"), "Date is not in the correct format");
     }
 
     @Test
     public void creatingTaskItemFailsWithInvalidTitle() {
-        TaskItem user = new TaskItem(System.in);
-        System.out.println("Task title: ");
-        String title = user.nextLine();
-        assert(TaskItem.getTitle()) : "WARNING: Your title must be at least 1 character long; your task is not created "
-                + title;
+        assertThrows(InvalidTitleException.class, () -> new TaskItem("", "11-12-2019"), "Title has less than 1 string");
     }
 
     @Test
     public void creatingTaskItemSucceedsWithValidDueDate() {
-        TaskItem user = new TaskItem(System.in);
-        System.out.println("Task Due Date (YYYY-MM-DD): ");
-        String date = user.nextLine();
-
-        assert(!TaskItem.getDate()) : "Your task is created because your date format is correct " + date;
+        TaskItem user = new TaskItem("Task #1", "2020-11-12");
+        assertEquals("2020-11-12", user.createDate());
     }
 
     @Test
     public void creatingTaskItemSucceedsWithValidTitle() {
-        TaskItem user = new TaskItem(System.in);
-        System.out.println("Task Due Date (YYYY-MM-DD): ");
-        String title = user.nextLine();
-
-        assert(!TaskItem.getTitle()) : "Your task is created because your date format is correct " + title;
+        TaskItem user = new TaskItem("Task #2", "2020-11-12");
+        assertEquals("Task #2", user.createTitle());
     }
 
     @Test
     public void settingTaskItemDueDateFailsWithInvalidDate() {
-        assertThrows(InputDateException.class, () -> TaskItem.setDate(), "Fail to edit the task");
+        assertThrows(InvalidDateException.class, () -> TaskItem.setDate("1122019"), "Date is not save or set");
     }
 
     @Test
     public void settingTaskItemDueDateSucceedsWithValidDate() {
-
+        TaskItem user = new TaskItem("Task #1", "test");
+        user.setDate("2020-11-12");
+        assertEquals("test", user.createDate());
     }
-/*
+
+    @Test
+    public void settingTaskItemTitleFailsWithInvalidTitle() {
+        assertThrows(InvalidDateException.class, () -> TaskItem.setTitle(""), "Title is not save or set");
+    }
+
+    @Test
+    public void settingTaskItemTitleSucceedsWithValidTitle() {
+        TaskItem user = new TaskItem("", "2020-11-12");
+        user.setTitle("Task #1");
+        assertEquals("", user.createTitle());
+    }
 
 
-
-
-
-settingTaskItemTitleFailsWithInvalidTitle()
-settingTaskItemTitleSucceedsWithValidTitle()
- */
 
 }
