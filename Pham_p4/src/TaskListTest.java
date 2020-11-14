@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -144,8 +145,8 @@ class TaskListTest {
 
     @Test
     public void newTaskListIsEmpty() {
-        String s = "test.txt";
-        assertThrows(FileNotFoundException.class, ()->TaskList.OpenFile(s));
+        String filename = "test.txt";
+        assertThrows(FileNotFoundException.class, ()->TaskList.OpenFile(FileName));
     }
 
     @Test
@@ -174,10 +175,25 @@ class TaskListTest {
 
     @Test
     public void savedTaskListCanBeLoaded() {
-
+        String filename = "output.txt";
+        TaskList m = new TaskList();
+        assertThrows(FileNotFoundException.class, ()->m.OpenFile(filename));
     }
-    /*
-uncompletingTaskItemChangesStatus()
-uncompletingTaskItemFailsWithInvalidIndex()
-     */
+
+    @Test
+    public void uncompletingTaskItemChangesStatus() {
+        List<TaskItem> items = new ArrayList<>();
+        TaskItem elements = new TaskItem("Task #1", "2020-11-12");
+
+        items.add(elements);
+        assertDoesNotThrow(() -> TaskList.UnmarkAsComplete(items.get(1)));
+    }
+
+    @Test
+    public void uncompletingTaskItemFailsWithInvalidIndex() {
+        List<TaskItem> items = new ArrayList<>();
+        TaskItem elements = new TaskItem("Task #1", "2020-11-12");
+        assertDoesNotThrow(() -> TaskList.UnmarkAsComplete(items.get(1)));
+    }
+
 }
