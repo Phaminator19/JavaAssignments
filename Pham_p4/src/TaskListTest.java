@@ -12,15 +12,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class TaskListTest {
     @Test
     public void addingTaskItemsIncreasesSize() {
-        List<TaskItem> items = new ArrayList<>();
         TaskList m = new TaskList();
         TaskItem elements = new TaskItem("Task #1", "2020-11-12");
         TaskItem elements_2 = new TaskItem("Task #2", "2020-10-30");
 
-        m.add(items.add(elements));
-        m.add(items.add(elements_2));
+        m.add(elements);
+        m.add(elements_2);
 
-        assertEquals(2,items.size());
+        assertEquals(2,m.size());
     }
 
     @Test
@@ -151,26 +150,25 @@ class TaskListTest {
 
     @Test
     public void removingTaskItemsDecreasesSize() {
-        List<TaskItem> items = new ArrayList<>();
         TaskList m = new TaskList();
         TaskItem elements = new TaskItem("Task #1", "2020-11-12");
         TaskItem elements_2 = new TaskItem("Task #2", "2020-10-30");
 
-        m.add(items.add(elements));
-        m.add(items.add(elements_2));
-        m.remove(items.remove(elements));
-        m.remove(items.remove(elements_2));
+        m.add(elements);
+        m.add(elements_2);
+        m.remove(elements);
+        m.remove(elements_2);
 
-        assertEquals(0, items.size());
+        assertEquals(0, m.size());
     }
 
     @Test
     public void removingTaskItemsFailsWithInvalidIndex() {
-        List<TaskItem> items = new ArrayList<>();
         TaskList m = new TaskList();
         TaskItem elements = new TaskItem("Task #1", "2020-11-12");
+        TaskItem index = m.get(1);
 
-        assertThrows(IndexOutOfBoundsException.class, ()->m.remove(items.remove(elements)));
+        assertThrows(IndexOutOfBoundsException.class, ()->m.remove(index));
     }
 
     @Test
@@ -193,7 +191,7 @@ class TaskListTest {
     public void uncompletingTaskItemFailsWithInvalidIndex() {
         List<TaskItem> items = new ArrayList<>();
         TaskItem elements = new TaskItem("Task #1", "2020-11-12");
-        assertDoesNotThrow(() -> TaskList.UnmarkAsComplete(items.get(1)));
+        assertThrows(IndexOutOfBoundsException.class, () -> TaskList.UnmarkAsComplete(items.get(1)));
     }
 
 }
