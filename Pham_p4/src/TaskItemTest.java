@@ -27,7 +27,7 @@ class TaskItemTest {
     @Test
     public void settingTaskItemDueDateFailsWithInvalidDate() {
         TaskItem user = new TaskItem("Task #1", "2020-11-12", "abc");
-        assertThrows(IllegalArgumentException.class, () -> user.setDue_Date(""), "Date is not save or set");
+        assertThrows(TaskItem.InvalidDateException.class, () -> user.setDue_Date(""), "Date is not save or set");
     }
 
     @Test

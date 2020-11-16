@@ -1,3 +1,4 @@
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,13 +12,13 @@ public class TaskItem {
     {
         if (isTitleValid(Title)) {
             this.Title = Title;
-        } else throw new IllegalArgumentException("WARNING: Title must be at least 1 string, task is not created");
+        } else throw new InvalidTitleException("WARNING: Title must be at least 1 string, task is not created");
 
         if (isDueDateValid(Due_Date)) {
             if(isDueDateCorrectFormat(Due_Date)) {
                 this.Due_Date = Due_Date;
-            }
-        } else throw new IllegalArgumentException("WARNING: Due date is incorrect, task is not created");
+            }else throw new InvalidDateException("WARNING: Due date is incorrect, task is not created");
+        }else throw new InvalidDateException("WARNING: Due date is empty, task is not created");
 
         this.Description = Description;
     }
@@ -25,7 +26,7 @@ public class TaskItem {
     public void setTitle(String Title) {
         if (isTitleValid(Title)) {
             this.Title = Title;
-        } else throw new IllegalArgumentException("WARNING: Title must be at least 1 string, task is not created");
+        } else throw new InvalidTitleException("WARNING: New title is not at least 1 string long. It did not save the new title");
     }
 
     public void setDescription (String description) {
@@ -35,7 +36,7 @@ public class TaskItem {
     public void setDue_Date (String date) {
         if (isDueDateCorrectFormat(date)) {
             this.Due_Date = date;
-        } else throw new IllegalArgumentException("WARNING: Date pass is incorrect format. Date did not save");
+        } else throw new InvalidDateException("Warning: New date is not in the correct format. It did not save the new date");
     }
 
     public String getTitle () {
@@ -60,20 +61,29 @@ public class TaskItem {
 
     private boolean isDueDateCorrectFormat(String Due_Date) {
 
-        boolean validity = false;
+        boolean validity;
         try {
-            date.parse(Due_Date);
-            date.setLenient(false);
+            DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
+            dateformat.setLenient(false);
+            dateformat.parse(Due_Date);
             validity = true;
         }catch (ParseException e) {
+            System.out.println("Warning: The date format is incorrect");
             validity = false;
         }
         return validity;
     }
 
-    public static void setFormatDate(String Due_date) {
-        date.format(Due_date);
-    }
+class InvalidTitleException extends IllegalArgumentException {
+        public InvalidTitleException (String msg) {
+            super(msg);
+        }
+}
 
+class InvalidDateException extends IllegalArgumentException {
+        public InvalidDateException(String msg) {
+            super(msg);
+        }
+}
 
 }

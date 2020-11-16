@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -19,22 +21,22 @@ public class App {
 //    The program needs encapsulate item data in a class called TaskItem and list data in a
 //    class called TaskList. App class will handle the user interaction.
 //
-    private static final Scanner userInput = new Scanner (System.in);
+    private static Scanner userInput = new Scanner (System.in);
     private final TaskList list;
 
-    public App() {
+    private App() {
         list = new TaskList();
     }
 
-    public void Main_menu () {
+    private void Main_menu () {
         System.out.println("Main Menu:");
-        System.out.println("------------");
+        System.out.println("---------------");
         int choice = askWhichOptions();
             if (choice == 1) {
                 List_Operation_menu();
             }
             else if (choice == 2) {
-                DoReadingData();
+                Do_Read_user_file();
             }
     }
 
@@ -45,9 +47,8 @@ public class App {
                 System.out.println("2) load an existing list");
                 System.out.println("3) quit");
 
-                int choice = userInput.nextInt();
+                return userInput.nextInt();
 
-                return choice;
 
             } catch (InputMismatchException ex) {
                 System.err.printf("%nException: %s%n", ex);
@@ -57,13 +58,30 @@ public class App {
         }
     }
 
-    private void DoReadingData() {
-        /* reading file */
+    private void Do_Read_user_file() {
+        Scanner input = new Scanner(System.in);
+        try {
+            System.out.print("What is your file name called (no need to type .txt)? ");
+            String filename = input.nextLine() + ".txt";
+            File myObj = new File(filename);
+            Scanner reader = new Scanner (myObj);
+
+            while (reader.hasNext())
+            {
+                TaskItem myItem = new TaskItem("Test", "placeholder", "2001-09-11");
+                myItem.setTitle(reader.nextLine());
+                myItem.setDescription(reader.nextLine());
+                myItem.setDue_Date(reader.nextLine());
+                list.addTask(myItem);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("File does not found. Please try again");
+        }
     }
 
     private void List_Operation_menu() {
         System.out.println("List Operation Menu");
-        System.out.println(("--------------"));
+        System.out.println(("--------------------"));
             int choice = askOtherOptions();
 
             if (choice == 1) {
@@ -118,30 +136,45 @@ public class App {
         if(list.size() <= 0){
             System.out.println("Sorry, empty list. Maybe add some tasks instead?\n");
         }
-        list.View_List();
+        else {
+            list.View_List();
+        }
         List_Operation_menu();
+    }
+    private void Current_task() {
+        if(list.size() <= 0){
+            System.out.println("Sorry, empty list. Maybe add some tasks instead?\n");
+        }
+        else {
+            list.View_List();
+        }
     }
     private void View_Completed_List() {
         list.View_Completed_List();
     }
+
     private String createTaskTitle() {
+        Scanner input = new Scanner(System.in);
         System.out.println("Task Title:");
-        return userInput.nextLine();
+        return input.nextLine();
     }
 
     private String createTaskDescription() {
+        Scanner input = new Scanner(System.in);
         System.out.println("Task Description:");
-        return userInput.nextLine();
+        return input.nextLine();
     }
 
     private String createTaskDueDate() {
+        Scanner input = new Scanner(System.in);
         System.out.println("Task Due Date (YYYY-MM-DD):");
-        return userInput.nextLine();
+        return input.nextLine();
     }
 
     private void create_Task_item() {
         TaskItem taskItem = null;
-        while (true) {
+        boolean continueLoop = true;
+        do {
             try {
                 String title = createTaskTitle();
                 String description = createTaskDescription();
@@ -151,163 +184,162 @@ public class App {
 
                 storedTaskItem(taskItem);
 
-                break;
+                continueLoop = false; //end looping
 
-            } catch (IllegalArgumentException err) {
+            } catch (TaskItem.InvalidTitleException err) {
+                System.out.println("Warning: your Title was invalid, please double check it and try again");
+            } catch (TaskItem.InvalidDateException err) {
+                System.out.println("Warning: Your Date was invalid, please double check it and try again");
+            } catch (InputMismatchException err) {
                 userInput.nextLine();
+                System.out.println("Please type a string date");
             }
-        }
-
+        } while(continueLoop);
         List_Operation_menu();
     }
 
     private void storedTaskItem (TaskItem task) {
-        list.add(task);
+        list.addTask(task);
     }
 
     private void edit_Task_item () {
-        System.out.println("Current Task:");
-        View_TaskList();
-        while (true) {
-            try {
-                System.out.println("Choose number which task would you like to edit?");
-                TaskItem minhAnh = list.getTaskItem(userInput.nextInt());
-
-                list.editTitle(minhAnh);
-                System.out.println("Task Title: ");
-                String title = userInput.nextLine();
-
-                list.editDate(minhAnh);
-                System.out.println("New date (YYYY-MM-DD):");
-                String date = userInput.nextLine();
-
-                list.editDescription(minhAnh);
-                System.out.println("Enter description: ");
-                String description = userInput.nextLine();
-
-                list.edit(title, date, description, minhAnh);
-                System.out.println("Your task is successfully edited! Returning...");
-
-                break;
-
-            } catch (IllegalArgumentException err) {
-                userInput.nextLine();
-            } catch (IndexOutOfBoundsException outOfBoundsException) {
-                System.out.println("Your chosen task-list isn't exist, try again with the given number.");
-                userInput.nextLine();
-            } catch (InputMismatchException ex) {
-                System.err.printf("%nException: %s%n", ex);
-                userInput.nextLine(); //this will discard string input to let the user try again.
-                System.out.printf("You must enter integers. Please try again. %n%n");
-            } catch (Exception ex2) {
-                ex2.printStackTrace();
-            }
-        }
-        List_Operation_menu();
-    }
-
-    private boolean shouldContinue(String userInput) {
-        return userInput.toLowerCase().startsWith("y");
-    }
-    private static String askShouldContinueRemoval() {
-        System.out.println("Do you wish to remove a task? Once you have removed you will not be able to retrieve it. Answer (y/n):");
-        return userInput.nextLine();
-    }
-    private static String askShouldContinueRegular() {
-        System.out.println("Do you want to continue? Answer (y/n):");
-        return userInput.nextLine();
-    }
-
-    private void remove_Task_item() {
-        /*your code here */
-        System.out.println("Current Task:");
-        View_TaskList();
-
-        while (shouldContinue(askShouldContinueRemoval())) {
-            while (true) {
+        Current_task();
+        if (list.size() > 0) {
+            boolean continueLoop = true;
+            do {
                 try {
-                    System.out.println("Choose number which task would you like to remove?");
-                    TaskItem minhAnh = list.getTaskItem(userInput.nextInt());
+                    System.out.println("Choose number which task would you like to edit?");
+                    int index = userInput.nextInt();
+                    TaskItem minhAnh = list.getTaskItem(index);
 
-                    list.remove(minhAnh);
-                    System.out.println("Your task is successfully removed! Returning...");
+                /*list.editTitle(minhAnh);
+                list.editDate(minhAnh);
+                list.editDescription(minhAnh);*/
 
-                    break;
+                    String title = createTaskTitle();
+                    String date = createTaskDueDate();
+                    String description = createTaskDescription();
+
+                    list.edit(title, date, description, minhAnh);
+
+                    System.out.println("Your task is successfully edited! Returning...");
+                    continueLoop = false;
+
+                } catch (TaskItem.InvalidTitleException err) {
+                    System.err.printf("%nException: %s%n", err);
+                    userInput.nextLine();
+                    System.out.println("Warning: your Title was invalid, please double check it and try again");
+
+                } catch (TaskItem.InvalidDateException err) {
+                    System.err.printf("%nException: %s%n", err);
+                    userInput.nextLine();
+                    System.out.println("Warning: Your Date was invalid, please double check it and try again");
+                } catch (IndexOutOfBoundsException outOfBoundsException) {
+                    System.err.printf("%nException: %s%n", outOfBoundsException);
+                    System.out.println("Your chosen task-list isn't exist, try again with the given number.");
+                    userInput.nextLine();
                 } catch (InputMismatchException ex) {
                     System.err.printf("%nException: %s%n", ex);
                     userInput.nextLine(); //this will discard string input to let the user try again.
                     System.out.printf("You must enter integers. Please try again. %n%n");
+                } catch (Exception ex2) {
+                    ex2.printStackTrace();
+                    userInput.nextLine();
                 }
+            }while (continueLoop);
+        }
+
+        List_Operation_menu();
+    }
+
+
+/*    private boolean shouldContinue(String userInput) {
+        return userInput.toLowerCase().startsWith("y");
+    }
+    private static String askShouldContinueRemoval() {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Do you wish to remove a task? Once you have removed you will not be able to retrieve it. Answer (y/n):");
+        return input.nextLine();
+    }
+    private static String askShouldContinueRegular() {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Do you want to continue? Answer (y/n):");
+        return input.nextLine();
+    }*/
+
+    private void remove_Task_item() {
+        Current_task();
+        if (list.size() > 0) {
+            try {
+                userInput.nextLine();
+                System.out.println("Choose number which task would you like to remove?");
+                TaskItem minhAnh = list.getTaskItem(userInput.nextInt());
+
+                list.remove(minhAnh);
+                System.out.println("Your task is successfully removed! Returning...");
+
+            } catch (InputMismatchException ex) {
+                System.err.printf("%nException: %s%n", ex);
+                userInput.nextLine(); //this will discard string input to let the user try again.
+                System.out.printf("You must enter integers. Please try again. %n%n");
             }
         }
         List_Operation_menu();
     }
 
     private void mark_Task_completed () {
-        System.out.println("Current Tasks:");
-        System.out.println("-------------------");
-        View_TaskList();
-        while (shouldContinue(askShouldContinueRegular())) {
-            View_TaskList();
-            while (true) {
-                try {
-                    System.out.println("Choose number which task would you like to mark complete?");
-                    TaskItem minhAnh = list.getTaskItem(userInput.nextInt());
+        Current_task();
+        if (list.size() > 0) {
+            try {
+                userInput.nextLine();
+                System.out.println("Choose number which task would you like to mark complete?");
+                TaskItem minhAnh = list.getTaskItem(userInput.nextInt());
 
-                    list.MarkAsComplete(minhAnh);
-                    System.out.println("Your task is successfully marked as completed! Returning...");
+                list.MarkAsComplete(minhAnh);
+                System.out.println("Your task is successfully marked as completed! Returning...");
 
-                    break;
-                } catch (InputMismatchException ex) {
-                    System.err.printf("%nException: %s%n", ex);
-                    userInput.nextLine(); //this will discard string input to let the user try again.
-                    System.out.printf("You must enter integers. Please try again. %n%n");
-                }
+            } catch (InputMismatchException ex) {
+                System.err.printf("%nException: %s%n", ex);
+                userInput.nextLine(); //this will discard string input to let the user try again.
+                System.out.printf("You must enter integers. Please try again. %n%n");
             }
         }
-
-        View_Completed_List();
-        List_Operation_menu();
+            View_Completed_List();
+            List_Operation_menu();
     }
 
     private void Unmark_Task_Completed() {
-        System.out.println("Current Tasks:");
-        System.out.println("-------------------");
-        View_TaskList();
-        while (shouldContinue(askShouldContinueRegular())) {
-            while (true) {
-                try {
-                    System.out.println("Choose number which task would you like to un-mark complete?");
-                    TaskItem minhAnh = list.getTaskItem(userInput.nextInt());
+        Current_task();
+        if (list.size() > 0) {
+            try {
+                userInput.nextLine();
+                System.out.println("Choose number which task would you like to un-mark complete?");
+                TaskItem minhAnh = list.getTaskItem(userInput.nextInt());
 
-                    list.UnmarkAsComplete(minhAnh);
-                    System.out.println("Your task is successfully un-marked as completed! Returning...");
+                list.UnmarkAsComplete(minhAnh);
+                System.out.println("Your task is successfully un-marked as completed! Returning...");
 
-                    break;
-                } catch (InputMismatchException ex) {
-                    System.err.printf("%nException: %s%n", ex);
-                    userInput.nextLine(); //this will discard string input to let the user try again.
-                    System.out.printf("You must enter integers. Please try again. %n%n");
-                }
+            } catch (InputMismatchException ex) {
+                System.err.printf("%nException: %s%n", ex);
+                userInput.nextLine(); //this will discard string input to let the user try again.
+                System.out.printf("You must enter integers. Please try again. %n%n");
             }
         }
         List_Operation_menu();
     }
-//    UserInput == 7; save the current list
-//            -Prompt the user to enter the filename to save as
-//    name = read string from user
-//             -create a file with the name
-//             -Print the string "task list has been saved"
     private void save_TaskList_output () {
+        Scanner input = new Scanner(System.in);
         System.out.print("Enter a file name: ");
-        String filename = userInput.nextLine();
+        String filename = input.nextLine()+ ".txt";
         list.write(filename);
+        System.out.println("Your File has successfully created and written!");
+        List_Operation_menu();
     }
 
     public static void main (String[] args) {
         App app = new App();
-        app.List_Operation_menu();
-        //app.Main_menu();
+
+        app.Main_menu();
         System.out.println("Thank you for using me. Goodbye!");
     }
 }
