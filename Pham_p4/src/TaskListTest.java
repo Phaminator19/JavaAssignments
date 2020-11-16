@@ -1,10 +1,7 @@
 import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,12 +21,12 @@ class TaskListTest {
 
     @Test
     public void completingTaskItemChangesStatus() {
-        List<TaskItem> items = new ArrayList<>();
         TaskItem elements = new TaskItem("Task #1", "2020-11-12", "abc");
         TaskList st = new TaskList();
 
-        items.add(elements);
-        assertDoesNotThrow(() -> st.MarkAsComplete(items.get(0)));
+        st.add(elements);
+        TaskItem testTask = st.getTaskItem(0);
+        assertDoesNotThrow(() -> st.MarkAsComplete(testTask));
     }
 
     @Test
@@ -37,126 +34,125 @@ class TaskListTest {
         TaskList m = new TaskList();
         TaskItem elements = new TaskItem("Task #1", "2020-11-12", "lol");
         m.add(elements);
-        TaskItem item = m.get(2);
-
-//        List<TaskItem> items = new ArrayList<>();
-        assertThrows(IndexOutOfBoundsException.class, ()->m.MarkAsComplete(item));
+        assertThrows(IndexOutOfBoundsException.class, ()->m.MarkAsComplete(m.getTaskItem(2)));
     }
 
     @Test
     public void editingTaskItemChangesValues() {
-        List<TaskItem> items = new ArrayList<>();
-        TaskItem elements = new TaskItem("", "", "");
+        TaskItem elements = new TaskItem("abc", "2020-11-16", "");
         TaskList minhAnh = new TaskList();
         assertDoesNotThrow(()->minhAnh.edit("Task #1", "2020-11-15", "This is a test", elements));
     }
 
     @Test
     public void editingTaskItemDescriptionChangesValue() {
-        List<TaskItem> items = new ArrayList<>();
         TaskItem elements = new TaskItem("Task #1", "2020-11-12", "abc");
         TaskList st = new TaskList();
-        items.add(elements);
-        TaskItem test = items.get(1);
+        st.add(elements);
+        TaskItem test = st.getTaskItem(0);
         assertDoesNotThrow(()->st.editDescription(test));
     }
 
     @Test
     public void editingTaskItemDescriptionFailsWithInvalidIndex() {
-        List<TaskItem> items = new ArrayList<>();
         TaskItem elements = new TaskItem("Task #2", "2020-11-12", "abde");
         TaskList testList = new TaskList();
-        items.add(elements);
-        TaskItem test = items.get(2);
+        testList.add(elements);
+        TaskItem test = testList.getTaskItem(2);
         assertThrows(IndexOutOfBoundsException.class, ()->testList.editDescription(test));
     }
 
     @Test
     public void editingTaskItemDueDateChangesValue() {
-        List<TaskItem> items = new ArrayList<>();
         TaskItem elements = new TaskItem("Task #2", "2020-11-12", "abc");
         TaskList st = new TaskList();
-        items.add(elements);
-        TaskItem test = items.get(1);
+        st.add(elements);
+        TaskItem test = st.getTaskItem(0);
         assertDoesNotThrow(()->st.editDate(test));
     }
     @Test
     public void editingTaskItemDueDateFailsWithInvalidIndex() {
-        List<TaskItem> items = new ArrayList<>();
         TaskItem elements = new TaskItem("Task #2", "2020-11-12", "abde");
         TaskList testList = new TaskList();
-        items.add(elements);
-        TaskItem test = items.get(2);
+        testList.add(elements);
+        TaskItem test = testList.getTaskItem(2);
         assertThrows(IndexOutOfBoundsException.class, ()->testList.editDate(test));
     }
 
     @Test
     public void editingTaskItemTitleChangesValue() {
-        List<TaskItem> items = new ArrayList<>();
         TaskItem elements = new TaskItem("Task", "2020-11-12", "abc");
         TaskList st = new TaskList();
-        items.add(elements);
-        TaskItem test = items.get(1);
+        st.add(elements);
+        TaskItem test = st.getTaskItem(0);
         assertDoesNotThrow(()->st.editTitle(test));
     }
 
     @Test
     public void editingTaskItemTitleFailsWithInvalidIndex() {
-        List<TaskItem> items = new ArrayList<>();
         TaskItem elements = new TaskItem("Task #2", "2020-11-12", "abde");
         TaskList testList = new TaskList();
-        items.add(elements);
-        TaskItem test = items.get(2);
+        testList.add(elements);
+        TaskItem test = testList.getTaskItem(2);
         assertThrows(IndexOutOfBoundsException.class, ()->testList.editTitle(test));
     }
 
     @Test
     public void gettingTaskItemDescriptionFailsWithInvalidIndex() {
-        List<TaskItem> items = new ArrayList<>();
+        TaskList m = new TaskList();
         TaskItem elements = new TaskItem("Task #1", "2020-11-12", "abc");
         TaskList st = new TaskList();
-        items.add(elements);
-        assertThrows(IndexOutOfBoundsException.class, ()->st.get(items.get(1)));
+        m.add(elements);
+        assertThrows(IndexOutOfBoundsException.class, ()->st.getTaskDescription(2));
     }
 
     @Test
     public void gettingTaskItemDescriptionSucceedsWithValidIndex() {
-        List<TaskItem> items = new ArrayList<>();
+        TaskList m = new TaskList();
         TaskItem elements = new TaskItem("Task #1", "2020-11-12", "abc");
-        items.add(elements);
-      assertDoesNotThrow(()->elements.getDescription());
+        m.add(elements);
+      assertDoesNotThrow(()->m.getTaskDescription(0));
     }
 
     @Test
     public void gettingTaskItemDueDateFailsWithInvalidIndex() {
-        List<TaskItem> items = new ArrayList<>();
+        TaskList m = new TaskList();
         TaskItem elements = new TaskItem("Task #1", "2020-11-12", "abc");
-        items.add(elements);
-        assertThrows(IndexOutOfBoundsException.class, ()->elements.getDate(items.get(2)));
+        m.add(elements);
+        assertThrows(IndexOutOfBoundsException.class, ()->m.getTaskDueDate(2));
     }
 
     @Test
     public void
     gettingTaskItemTitleFailsWithInvalidIndex() {
-        List<TaskItem> items = new ArrayList<>();
+        TaskList m = new TaskList();
         TaskItem elements = new TaskItem("Task #1", "2020-11-12", "abc");
-        items.add(elements);
-        TaskItem testItem = items.get(2);
-        assertThrows(IndexOutOfBoundsException.class, ()->testItem.getTitle());
+        m.add(elements);
+        assertThrows(IndexOutOfBoundsException.class, ()->m.getTaskTitle(3));
     }
 
     @Test
     public void gettingTaskItemTitleSucceedsWithValidIndex() {
-        List<TaskItem> items = new ArrayList<>();
+        TaskList m = new TaskList();
         TaskItem elements = new TaskItem("Task 5", "2020-11-12", "abc");
-        items.add(elements);
-        assertDoesNotThrow(()->elements.getTitle(items.get(1)));
+        m.add(elements);
+        assertDoesNotThrow(()->m.getTaskTitle(0));
+    }
+
+    @Test
+    public void gettingTaskItemDueDateSucceedsWithValidIndex() {
+        TaskList m = new TaskList();
+        TaskItem elements = new TaskItem("Task 5", "2020-11-12", "abc");
+        m.add(elements);
+        assertDoesNotThrow(()->m.getTaskDueDate(0));
     }
 
     @Test
     public void newTaskListIsEmpty() {
+        TaskList testList = new TaskList();
+
         String filename = "test.txt";
-        assertThrows(FileNotFoundException.class, ()->TaskList.OpenFile(FileName));
+        assertDoesNotThrow(()->testList.write(filename));
     }
 
     @Test
@@ -178,7 +174,7 @@ class TaskListTest {
         TaskList m = new TaskList();
         TaskItem elements = new TaskItem("Task #1", "2020-11-12", "abc");
         m.add(elements);
-        TaskItem test = m.get(2);
+        TaskItem test = m.getTaskItem(2);
 
         assertThrows(IndexOutOfBoundsException.class, ()->m.remove(test));
     }
@@ -187,7 +183,7 @@ class TaskListTest {
     public void savedTaskListCanBeLoaded() {
         String filename = "output.txt";
         TaskList m = new TaskList();
-        assertThrows(FileNotFoundException.class, ()->m.OpenFile(filename));
+        assertThrows(FileNotFoundException.class, ()->m.write(filename));
     }
 
     @Test
@@ -195,8 +191,8 @@ class TaskListTest {
         TaskList m = new TaskList();
         TaskItem elements = new TaskItem("Task #1", "2020-11-12", "lmao");
         m.add(elements);
-        TaskItem testItem = m.get(1);
-
+        TaskItem testItem = m.getTaskItem(0);
+        m.MarkAsComplete(testItem);
         assertDoesNotThrow(() -> m.UnmarkAsComplete(testItem));
     }
 
@@ -204,7 +200,7 @@ class TaskListTest {
     public void uncompletingTaskItemFailsWithInvalidIndex() {
         TaskList m = new TaskList();
         TaskItem elements = new TaskItem("Task #1", "2020-11-12", "ROFL");
-        TaskItem testItem = m.get(1);
+        TaskItem testItem = m.getTaskItem(1);
         assertThrows(IndexOutOfBoundsException.class, () -> m.UnmarkAsComplete(testItem));
     }
 

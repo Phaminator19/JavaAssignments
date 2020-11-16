@@ -17,7 +17,7 @@ public class TaskItem {
             if(isDueDateCorrectFormat(Due_Date)) {
                 this.Due_Date = Due_Date;
             }
-        } else throw new IllegalArgumentException("WARNING: Due date is empty, task is not created");
+        } else throw new IllegalArgumentException("WARNING: Due date is incorrect, task is not created");
 
         this.Description = Description;
     }
@@ -33,11 +33,9 @@ public class TaskItem {
     }
 
     public void setDue_Date (String date) {
-        if (isDueDateValid(Due_Date)) {
-            if(isDueDateCorrectFormat(Due_Date)) {
-                this.Due_Date = Due_Date;
-            }
-        } else throw new IllegalArgumentException("WARNING: Due date is empty, task is not created");
+        if (isDueDateCorrectFormat(date)) {
+            this.Due_Date = date;
+        } else throw new IllegalArgumentException("WARNING: Date pass is incorrect format. Date did not save");
     }
 
     public String getTitle () {
@@ -68,7 +66,6 @@ public class TaskItem {
             date.setLenient(false);
             validity = true;
         }catch (ParseException e) {
-            e.printStackTrace();
             validity = false;
         }
         return validity;

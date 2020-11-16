@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TaskItemTest {
     @Test
     public void creatingTaskItemFailsWithInvalidDueDate(){
-        assertThrows(IllegalArgumentException.class, () -> new TaskItem("Task #1", "11122019", "abc"), "Date is not in the correct format");
+        assertThrows(IllegalArgumentException.class, () -> new TaskItem("Task #1", "", "abc"), "Date is not in the correct format");
     }
 
     @Test
@@ -26,28 +26,28 @@ class TaskItemTest {
 
     @Test
     public void settingTaskItemDueDateFailsWithInvalidDate() {
-        TaskItem user = new TaskItem("Task #1", "test", "abc");
-        assertThrows(IllegalArgumentException.class, () -> user.setDate("1122019"), "Date is not save or set");
+        TaskItem user = new TaskItem("Task #1", "2020-11-12", "abc");
+        assertThrows(IllegalArgumentException.class, () -> user.setDue_Date(""), "Date is not save or set");
     }
 
     @Test
     public void settingTaskItemDueDateSucceedsWithValidDate() {
-        TaskItem user = new TaskItem("Task #1", "test", "abc");
-        user.setDate("20201112");
-        assertEquals("2020-11-12", user.getDue_Date());
+        TaskItem user = new TaskItem("Task #1", "2020-11-12", "abc");
+        user.setDue_Date("2020-11-25");
+        assertEquals("2020-11-25", user.getDue_Date());
     }
 
     @Test
     public void settingTaskItemTitleFailsWithInvalidTitle() {
-        TaskItem user = new TaskItem("Task #1", "test", "abc");
+        TaskItem user = new TaskItem("Task #1", "2020-11-12", "abc");
         assertThrows(IllegalArgumentException.class, () -> user.setTitle(""), "Title is not save or set");
     }
 
     @Test
     public void settingTaskItemTitleSucceedsWithValidTitle() {
-        TaskItem user = new TaskItem("", "2020-11-12", "abc");
+        TaskItem user = new TaskItem("test", "2020-11-12", "abc");
         user.setTitle("Task #1");
-        assertEquals("", user.getTitle());
+        assertEquals("Task #1", user.getTitle());
     }
 
 

@@ -1,7 +1,4 @@
-import com.sun.tools.javac.Main;
-
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
 
 public class App {
@@ -22,8 +19,8 @@ public class App {
 //    The program needs encapsulate item data in a class called TaskItem and list data in a
 //    class called TaskList. App class will handle the user interaction.
 //
-    private static Scanner userInput = new Scanner (System.in);
-    private TaskList list;
+    private static final Scanner userInput = new Scanner (System.in);
+    private final TaskList list;
 
     public App() {
         list = new TaskList();
@@ -31,29 +28,14 @@ public class App {
 
     public void Main_menu () {
         System.out.println("Main Menu:");
-        System.out.println("----------");
-
-        while (chooseOptions(askWhichOptions())) {
-            if (askWhichOptions() == 1) {
+        System.out.println("------------");
+        int choice = askWhichOptions();
+            if (choice == 1) {
                 List_Operation_menu();
             }
-            else if (askWhichOptions() == 2) {
+            else if (choice == 2) {
                 DoReadingData();
             }
-            else if (askWhichOptions() == 3) {
-                return;
-            }
-        }
-    }
-
-    private boolean chooseOptions (int userInput) {
-        if (userInput == 1) {
-            return true;
-        }
-        if(userInput == 2) {
-            return true;
-        }
-        return userInput == 3;
     }
 
     private int askWhichOptions() {
@@ -63,7 +45,9 @@ public class App {
                 System.out.println("2) load an existing list");
                 System.out.println("3) quit");
 
-                return userInput.nextInt();
+                int choice = userInput.nextInt();
+
+                return choice;
 
             } catch (InputMismatchException ex) {
                 System.err.printf("%nException: %s%n", ex);
@@ -76,68 +60,35 @@ public class App {
     private void DoReadingData() {
         /* reading file */
     }
-//
-//        List Operation Menu:
+
     private void List_Operation_menu() {
         System.out.println("List Operation Menu");
         System.out.println(("--------------"));
-        while(chooseOtherOptions(askOtherOptions())) {
-            if (askOtherOptions() == 1) {
+            int choice = askOtherOptions();
+
+            if (choice == 1) {
                 View_TaskList();
             }
-            if (askOtherOptions() == 2) {
+            if (choice == 2) {
                 create_Task_item();
             }
-            if (askOtherOptions() == 3) {
+            if (choice == 3) {
                 edit_Task_item();
             }
-            if (askOtherOptions() == 4) {
+            if (choice == 4) {
                 remove_Task_item();
             }
-            if (askOtherOptions() == 5) {
+            if (choice == 5) {
                 mark_Task_completed();
             }
-            if (askOtherOptions() == 6) {
+            if (choice == 6) {
                 Unmark_Task_Completed();
             }
-            if (askOtherOptions() == 7) {
+            if (choice == 7) {
                 save_TaskList_output();
             }
-            if(askOtherOptions()==8) {
+            if(choice ==8) {
                 Main_menu();
-            }
-        }
-        if (!chooseOtherOptions(askOtherOptions())) {
-            Main_menu();
-        }
-    }
-
-    private boolean chooseOtherOptions(int userInput) {
-            if (userInput == 1) {
-                return true;
-            }
-            if (userInput == 2) {
-                return true;
-            }
-            if (userInput == 3) {
-                return true;
-            }
-            if (userInput == 4) {
-                return true;
-            }
-            if (userInput == 5) {
-                return true;
-            }
-            if (userInput == 6) {
-                return true;
-            }
-            if (userInput == 7) {
-                return true;
-            }
-            if (userInput == 8) {
-                return true;
-            } else {
-                return false;
             }
     }
 
@@ -162,44 +113,51 @@ public class App {
             }
         }
     }
-//
-//    Prompt ask user for the following menu option.
-//    Need to return back the menu with the List Operation Menu again after we done with one of the option
-//
-//    loop is here:
-//
+
     private void View_TaskList() {
+        if(list.size() <= 0){
+            System.out.println("Sorry, empty list. Maybe add some tasks instead?\n");
+        }
         list.View_List();
         List_Operation_menu();
     }
     private void View_Completed_List() {
         list.View_Completed_List();
     }
+    private String createTaskTitle() {
+        System.out.println("Task Title:");
+        return userInput.nextLine();
+    }
+
+    private String createTaskDescription() {
+        System.out.println("Task Description:");
+        return userInput.nextLine();
+    }
+
+    private String createTaskDueDate() {
+        System.out.println("Task Due Date (YYYY-MM-DD):");
+        return userInput.nextLine();
+    }
 
     private void create_Task_item() {
-
+        TaskItem taskItem = null;
         while (true) {
             try {
-                System.out.println("Task Title: ");
-                String title = userInput.nextLine();
+                String title = createTaskTitle();
+                String description = createTaskDescription();
+                String Due_Date = createTaskDueDate();
 
-
-                System.out.println("Task Description: ");
-                String description = userInput.nextLine();
-
-
-                System.out.println("Task Due Date (YYYY-MM-DD): ");
-                String Due_Date = userInput.nextLine();
-
-                TaskItem taskItem = new TaskItem(title, Due_Date, description);
+                taskItem = new TaskItem(title, Due_Date, description);
 
                 storedTaskItem(taskItem);
 
                 break;
+
             } catch (IllegalArgumentException err) {
                 userInput.nextLine();
             }
         }
+
         List_Operation_menu();
     }
 
@@ -213,7 +171,7 @@ public class App {
         while (true) {
             try {
                 System.out.println("Choose number which task would you like to edit?");
-                TaskItem minhAnh = list.get(userInput.nextInt());
+                TaskItem minhAnh = list.getTaskItem(userInput.nextInt());
 
                 list.editTitle(minhAnh);
                 System.out.println("Task Title: ");
@@ -248,21 +206,6 @@ public class App {
         List_Operation_menu();
     }
 
-//
-//        UserInput == 4; remove an item
-//                Prompt the user to which item to remove an item
-//                    String prints the current tasks.
-//                Prompt the user if they want to quit instead or continue
-//                        UserInput = No
-//                            continue;
-//                        else UserInput = yes
-//                            return back to the beginning of the loop
-//                    -if user enter any thing else other those numbers, return a string with Invalid Input
-//                    and return back to this prompt
-//                -User choose the task to be remove
-//                -dispose the tasks that were chosen by the user
-//                Return to the beginning of the loop;
-
     private boolean shouldContinue(String userInput) {
         return userInput.toLowerCase().startsWith("y");
     }
@@ -284,7 +227,7 @@ public class App {
             while (true) {
                 try {
                     System.out.println("Choose number which task would you like to remove?");
-                    TaskItem minhAnh = list.get(userInput.nextInt());
+                    TaskItem minhAnh = list.getTaskItem(userInput.nextInt());
 
                     list.remove(minhAnh);
                     System.out.println("Your task is successfully removed! Returning...");
@@ -299,20 +242,6 @@ public class App {
         }
         List_Operation_menu();
     }
-//
-//        UserInput == 5; mark an item as completed
-//            Prompt the user to which item to mark as completed an item
-//                String prints the current tasks.
-//            Prompt the user if they want to quit
-//                        UserInput = No
-//                            continue;
-//                        else UserInput = yes
-//                            return back to the beginning of the loop
-//                -if user enter any thing else other those numbers, return a string with Invalid Input
-//                 and repeat the prompt
-//                -User choose the task to be mark as completed
-//                -Mark the tasks that were chosen by the user with some kind of way
-//                -Return to the beginning of the loop;
 
     private void mark_Task_completed () {
         System.out.println("Current Tasks:");
@@ -322,8 +251,8 @@ public class App {
             View_TaskList();
             while (true) {
                 try {
-                    System.out.println("Choose number which task would you like to remove?");
-                    TaskItem minhAnh = list.get(userInput.nextInt());
+                    System.out.println("Choose number which task would you like to mark complete?");
+                    TaskItem minhAnh = list.getTaskItem(userInput.nextInt());
 
                     list.MarkAsComplete(minhAnh);
                     System.out.println("Your task is successfully marked as completed! Returning...");
@@ -340,22 +269,29 @@ public class App {
         View_Completed_List();
         List_Operation_menu();
     }
-//
-//        UserInput == 6; un-mark an item as completed
-//                Prompt the user to which item to un-mark a completed item
-//                String prints the current tasks.
-//                Prompt the user if they want to quit
-//                        UserInput = No
-//                            continue;
-//                        else UserInput = yes
-//                            return back to the beginning of the loop
-//                    -if user enter any thing else other those numbers, return a string with Invalid Input
-//                    and repeat the prompt
-//                -User choose the task to be un-mark as completed
-//                -Un-Mark the tasks that were chosen by the user with some kind of way
-//                -Return to the beginning of the loop;
-    private void Unmark_Task_Completed() {
 
+    private void Unmark_Task_Completed() {
+        System.out.println("Current Tasks:");
+        System.out.println("-------------------");
+        View_TaskList();
+        while (shouldContinue(askShouldContinueRegular())) {
+            while (true) {
+                try {
+                    System.out.println("Choose number which task would you like to un-mark complete?");
+                    TaskItem minhAnh = list.getTaskItem(userInput.nextInt());
+
+                    list.UnmarkAsComplete(minhAnh);
+                    System.out.println("Your task is successfully un-marked as completed! Returning...");
+
+                    break;
+                } catch (InputMismatchException ex) {
+                    System.err.printf("%nException: %s%n", ex);
+                    userInput.nextLine(); //this will discard string input to let the user try again.
+                    System.out.printf("You must enter integers. Please try again. %n%n");
+                }
+            }
+        }
+        List_Operation_menu();
     }
 //    UserInput == 7; save the current list
 //            -Prompt the user to enter the filename to save as
@@ -363,13 +299,15 @@ public class App {
 //             -create a file with the name
 //             -Print the string "task list has been saved"
     private void save_TaskList_output () {
-
+        System.out.print("Enter a file name: ");
+        String filename = userInput.nextLine();
+        list.write(filename);
     }
 
     public static void main (String[] args) {
         App app = new App();
-
-        app.Main_menu();
+        app.List_Operation_menu();
+        //app.Main_menu();
         System.out.println("Thank you for using me. Goodbye!");
     }
 }
