@@ -1,3 +1,5 @@
+import com.sun.tools.javac.Main;
+
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -34,6 +36,9 @@ public class App {
             else if (askWhichOptions() == 2) {
                 DoReadingData();
             }
+            else if (askWhichOptions() == 3) {
+                return;
+            }
         }
     }
 
@@ -41,13 +46,10 @@ public class App {
         if (userInput == 1) {
             return true;
         }
-        else if(userInput == 2) {
+        if(userInput == 2) {
             return true;
         }
-        else {
-            return false;
-        }
-
+        return userInput == 3;
     }
 
     private int askWhichOptions() {
@@ -101,31 +103,38 @@ public class App {
                 Main_menu();
             }
         }
+        if (!chooseOtherOptions(askOtherOptions())) {
+            Main_menu();
+        }
     }
 
     private boolean chooseOtherOptions(int userInput) {
-        if (userInput == 1) {
-            return true;
-        }
-        if (userInput == 2) {
-            return true;
-        }
-        if (userInput == 3) {
-            return true;
-        }
-        if (userInput == 4) {
-            return true;
-        }
-        if (userInput == 5) {
-            return true;
-        }
-        if (userInput == 6) {
-            return true;
-        }
-        if (userInput == 7) {
-            return true;
-        }
-        else return false;
+            if (userInput == 1) {
+                return true;
+            }
+            if (userInput == 2) {
+                return true;
+            }
+            if (userInput == 3) {
+                return true;
+            }
+            if (userInput == 4) {
+                return true;
+            }
+            if (userInput == 5) {
+                return true;
+            }
+            if (userInput == 6) {
+                return true;
+            }
+            if (userInput == 7) {
+                return true;
+            }
+            if (userInput == 8) {
+                return true;
+            } else {
+                return false;
+            }
     }
 
     private int askOtherOptions() {
@@ -198,6 +207,7 @@ public class App {
             try {
                 System.out.println("Choose number which task would you like to edit?");
                 TaskItem minhAnh = list.get(userInput.nextInt());
+
                 list.editTitle(minhAnh);
                 System.out.println("Task Title: ");
                 String title = userInput.nextLine();
@@ -211,8 +221,10 @@ public class App {
                 String description = userInput.nextLine();
 
                 list.edit(title, date, description, minhAnh);
+                System.out.println("Your task is successfully edited! Returning...");
 
                 break;
+
             } catch (IllegalArgumentException err) {
                 userInput.nextLine();
             } catch (IndexOutOfBoundsException outOfBoundsException) {
@@ -243,8 +255,38 @@ public class App {
 //                -User choose the task to be remove
 //                -dispose the tasks that were chosen by the user
 //                Return to the beginning of the loop;
+
+    private boolean shouldContinue(String userInput) {
+        return userInput.toLowerCase().startsWith("y");
+    }
+    private static String askShouldContinueRemoval() {
+        System.out.println("Do you wish to remove a task? Once you have removed you will not be able to retrieve it. Answer (y/n):");
+        return userInput.nextLine();
+    }
+
     private void remove_Task_item() {
         /*your code here */
+        System.out.println("Current Task:");
+        View_TaskList();
+
+        while (shouldContinue(askShouldContinueRemoval())) {
+            while (true) {
+                try {
+                    System.out.println("Choose number which task would you like to remove?");
+                    TaskItem minhAnh = list.get(userInput.nextInt());
+
+                    list.remove(minhAnh);
+                    System.out.println("Your task is successfully removed! Returning...");
+
+                    break;
+                } catch (InputMismatchException ex) {
+                    System.err.printf("%nException: %s%n", ex);
+                    userInput.nextLine(); //this will discard string input to let the user try again.
+                    System.out.printf("You must enter integers. Please try again. %n%n");
+                }
+            }
+        }
+        List_Operation_menu();
     }
 //
 //        UserInput == 5; mark an item as completed
@@ -293,5 +335,6 @@ public class App {
         App app = new App();
 
         app.Main_menu();
+        System.out.println("Thank you for using me. Goodbye!");
     }
 }

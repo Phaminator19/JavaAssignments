@@ -53,5 +53,10 @@ public class TaskList {
     }
 
 
+    public void UnmarkAsComplete(TaskItem testItem) {
+    }
+
+    public void OpenFile(String filename) {
+    }
 }
 

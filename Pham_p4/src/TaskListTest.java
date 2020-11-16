@@ -162,8 +162,8 @@ class TaskListTest {
     @Test
     public void removingTaskItemsDecreasesSize() {
         TaskList m = new TaskList();
-        TaskItem elements = new TaskItem("Task #1", "2020-11-12");
-        TaskItem elements_2 = new TaskItem("Task #2", "2020-10-30");
+        TaskItem elements = new TaskItem("Task #1", "2020-11-12", "abc");
+        TaskItem elements_2 = new TaskItem("Task #2", "2020-10-30", "lol");
 
         m.add(elements);
         m.add(elements_2);
@@ -176,10 +176,11 @@ class TaskListTest {
     @Test
     public void removingTaskItemsFailsWithInvalidIndex() {
         TaskList m = new TaskList();
-        TaskItem elements = new TaskItem("Task #1", "2020-11-12");
-        TaskItem index = m.get(1);
+        TaskItem elements = new TaskItem("Task #1", "2020-11-12", "abc");
+        m.add(elements);
+        TaskItem test = m.get(2);
 
-        assertThrows(IndexOutOfBoundsException.class, ()->m.remove(index));
+        assertThrows(IndexOutOfBoundsException.class, ()->m.remove(test));
     }
 
     @Test
@@ -191,18 +192,20 @@ class TaskListTest {
 
     @Test
     public void uncompletingTaskItemChangesStatus() {
-        List<TaskItem> items = new ArrayList<>();
-        TaskItem elements = new TaskItem("Task #1", "2020-11-12");
+        TaskList m = new TaskList();
+        TaskItem elements = new TaskItem("Task #1", "2020-11-12", "lmao");
+        m.add(elements);
+        TaskItem testItem = m.get(1);
 
-        items.add(elements);
-        assertDoesNotThrow(() -> TaskList.UnmarkAsComplete(items.get(1)));
+        assertDoesNotThrow(() -> m.UnmarkAsComplete(testItem));
     }
 
     @Test
     public void uncompletingTaskItemFailsWithInvalidIndex() {
-        List<TaskItem> items = new ArrayList<>();
-        TaskItem elements = new TaskItem("Task #1", "2020-11-12");
-        assertThrows(IndexOutOfBoundsException.class, () -> TaskList.UnmarkAsComplete(items.get(1)));
+        TaskList m = new TaskList();
+        TaskItem elements = new TaskItem("Task #1", "2020-11-12", "ROFL");
+        TaskItem testItem = m.get(1);
+        assertThrows(IndexOutOfBoundsException.class, () -> m.UnmarkAsComplete(testItem));
     }
 
 }
