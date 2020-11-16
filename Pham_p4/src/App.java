@@ -25,6 +25,10 @@ public class App {
     private static Scanner userInput = new Scanner (System.in);
     private TaskList list;
 
+    public App() {
+        list = new TaskList();
+    }
+
     public void Main_menu () {
         System.out.println("Main Menu:");
         System.out.println("----------");
@@ -168,6 +172,9 @@ public class App {
         list.View_List();
         List_Operation_menu();
     }
+    private void View_Completed_List() {
+        list.View_Completed_List();
+    }
 
     private void create_Task_item() {
 
@@ -263,6 +270,10 @@ public class App {
         System.out.println("Do you wish to remove a task? Once you have removed you will not be able to retrieve it. Answer (y/n):");
         return userInput.nextLine();
     }
+    private static String askShouldContinueRegular() {
+        System.out.println("Do you want to continue? Answer (y/n):");
+        return userInput.nextLine();
+    }
 
     private void remove_Task_item() {
         /*your code here */
@@ -302,8 +313,32 @@ public class App {
 //                -User choose the task to be mark as completed
 //                -Mark the tasks that were chosen by the user with some kind of way
 //                -Return to the beginning of the loop;
+
     private void mark_Task_completed () {
-        /*your code here */
+        System.out.println("Current Tasks:");
+        System.out.println("-------------------");
+        View_TaskList();
+        while (shouldContinue(askShouldContinueRegular())) {
+            View_TaskList();
+            while (true) {
+                try {
+                    System.out.println("Choose number which task would you like to remove?");
+                    TaskItem minhAnh = list.get(userInput.nextInt());
+
+                    list.MarkAsComplete(minhAnh);
+                    System.out.println("Your task is successfully marked as completed! Returning...");
+
+                    break;
+                } catch (InputMismatchException ex) {
+                    System.err.printf("%nException: %s%n", ex);
+                    userInput.nextLine(); //this will discard string input to let the user try again.
+                    System.out.printf("You must enter integers. Please try again. %n%n");
+                }
+            }
+        }
+
+        View_Completed_List();
+        List_Operation_menu();
     }
 //
 //        UserInput == 6; un-mark an item as completed

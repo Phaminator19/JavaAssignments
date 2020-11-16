@@ -29,19 +29,18 @@ class TaskListTest {
         TaskList st = new TaskList();
 
         items.add(elements);
-        assertDoesNotThrow(() -> st.MarkAsComplete(items.get(1)));
+        assertDoesNotThrow(() -> st.MarkAsComplete(items.get(0)));
     }
 
     @Test
     public void completingTaskItemFailsWithInvalidIndex() {
-        /*
-        List <TaskItem> tasks = new ArrayList<>();
         TaskList m = new TaskList();
-        TaskItem elements = new TaskItem();
-        App app = new App();
-*/
-        List<TaskItem> items = new ArrayList<>();
-        assertThrows(IndexOutOfBoundsException.class, ()->TaskList.MarkAsComplete(items.get(1)));
+        TaskItem elements = new TaskItem("Task #1", "2020-11-12", "lol");
+        m.add(elements);
+        TaskItem item = m.get(2);
+
+//        List<TaskItem> items = new ArrayList<>();
+        assertThrows(IndexOutOfBoundsException.class, ()->m.MarkAsComplete(item));
     }
 
     @Test
@@ -142,13 +141,14 @@ class TaskListTest {
         List<TaskItem> items = new ArrayList<>();
         TaskItem elements = new TaskItem("Task #1", "2020-11-12", "abc");
         items.add(elements);
-        assertThrows(IndexOutOfBoundsException.class, ()->elements.getTitle(items.get(2)));
+        TaskItem testItem = items.get(2);
+        assertThrows(IndexOutOfBoundsException.class, ()->testItem.getTitle());
     }
 
     @Test
     public void gettingTaskItemTitleSucceedsWithValidIndex() {
         List<TaskItem> items = new ArrayList<>();
-        TaskItem elements = new TaskItem("Task 5", "2020-11-12");
+        TaskItem elements = new TaskItem("Task 5", "2020-11-12", "abc");
         items.add(elements);
         assertDoesNotThrow(()->elements.getTitle(items.get(1)));
     }

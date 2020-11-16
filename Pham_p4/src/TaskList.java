@@ -10,9 +10,19 @@ public class TaskList {
     public void View_List () {
         int i = 1;
         for (TaskItem taskItem : list) {
-            System.out.printf("%d)" + taskItem.getTitle() + taskItem.getDue_Date(), i);
+            System.out.printf("%d)" + taskItem.getDue_Date() + taskItem.getTitle(), i);
             System.out.println("\n");
             i++;
+        }
+    }
+
+    public void View_Completed_List() {
+        for (int i = 0; i < list.size(); i++) {
+            TaskItem taskItem = list.get(i);
+            if(taskItem.getDue_Date().startsWith("*")) {
+                System.out.println("Completed Tasks: ");
+                System.out.println(taskItem.getDue_Date() + taskItem.getTitle() + ": " +taskItem.getDescription());
+            }
         }
     }
     public void add(TaskItem tasks) {
@@ -54,9 +64,18 @@ public class TaskList {
 
 
     public void UnmarkAsComplete(TaskItem testItem) {
+
     }
 
     public void OpenFile(String filename) {
+    }
+
+    public void MarkAsComplete(TaskItem taskItem) {
+        taskItem.setDue_Date("****" + taskItem.getDue_Date()); //just add stars to the first character to mark it as
+        // complete
+
+
+
     }
 }
 
