@@ -1,4 +1,5 @@
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class App {
@@ -65,9 +66,15 @@ public class App {
             }
         }
     }
+
+    private void DoReadingData() {
+        /* reading file */
+    }
 //
 //        List Operation Menu:
     private void List_Operation_menu() {
+        System.out.println("List Operation Menu");
+        System.out.println(("--------------"));
         while(chooseOtherOptions(askOtherOptions())) {
             if (askOtherOptions() == 1) {
                 View_TaskList();
@@ -177,34 +184,51 @@ public class App {
                 userInput.nextLine();
             }
         }
+        List_Operation_menu();
     }
 
     private void storedTaskItem (TaskItem task) {
         list.add(task);
     }
-//
-//        UserInput == 3; Edit an item
-//            String print the current tasks with numbered next to it
-//
-//            prompt the user to choose which task to edit
-//                -if userInput doesn't match, return a string with Invalid Input and ask for a correct input
-//                -Automatically return back this method and try again
-//
-//            prompt the user to make new title for that specific chosen task
-//               -if the user enter wrong title return an invalid title string and let the user input the title
-//               again.
-//               -else return a string that said task item succeeds with valid title
-//
-//            prompt the user to make a new description for that specific chosen task
-//
-//            prompt the user to enter a new task due date (YYYY-MM-DD) for that chosen task
-//               -if the user enter wrong date return an invalid date string and let the user input the title
-//               again.
-//               -else return a string that said task item succeeds with valid date
-//               -Return to the beginning of the loop;
+
     private void edit_Task_item () {
-        /*YOUR CODE HERE */
+        System.out.println("Current Task:");
+        View_TaskList();
+        while (true) {
+            try {
+                System.out.println("Choose number which task would you like to edit?");
+                TaskItem minhAnh = list.get(userInput.nextInt());
+                list.editTitle(minhAnh);
+                System.out.println("Task Title: ");
+                String title = userInput.nextLine();
+
+                list.editDate(minhAnh);
+                System.out.println("New date (YYYY-MM-DD):");
+                String date = userInput.nextLine();
+
+                list.editDescription(minhAnh);
+                System.out.println("Enter description: ");
+                String description = userInput.nextLine();
+
+                list.edit(title, date, description, minhAnh);
+
+                break;
+            } catch (IllegalArgumentException err) {
+                userInput.nextLine();
+            } catch (IndexOutOfBoundsException outOfBoundsException) {
+                System.out.println("Your chosen task-list isn't exist, try again with the given number.");
+                userInput.nextLine();
+            } catch (InputMismatchException ex) {
+                System.err.printf("%nException: %s%n", ex);
+                userInput.nextLine(); //this will discard string input to let the user try again.
+                System.out.printf("You must enter integers. Please try again. %n%n");
+            } catch (Exception ex2) {
+                ex2.printStackTrace();
+            }
+        }
+        List_Operation_menu();
     }
+
 //
 //        UserInput == 4; remove an item
 //                Prompt the user to which item to remove an item

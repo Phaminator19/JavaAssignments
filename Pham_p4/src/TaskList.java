@@ -8,8 +8,11 @@ public class TaskList {
     }
 
     public void View_List () {
+        int i = 1;
         for (TaskItem taskItem : list) {
-            System.out.println(taskItem.getTitle() + taskItem.getDue_Date());
+            System.out.printf("%d)" + taskItem.getTitle() + taskItem.getDue_Date(), i);
+            System.out.println("\n");
+            i++;
         }
     }
     public void add(TaskItem tasks) {
@@ -26,6 +29,27 @@ public class TaskList {
 
     public TaskItem get(int index) {
         return list.get(index);
+    }
+
+    public void edit (String title, String date, String Description, TaskItem tasks) {
+        try {
+            tasks.setTitle(title);
+            tasks.setDescription(Description);
+            tasks.setDue_Date(date);
+        } catch (IllegalArgumentException err) {
+            throw new IllegalArgumentException("WARNING: Task is not created. Title or Date isn't correct");
+        }
+    }
+    public void editDescription(TaskItem tasks) {
+        tasks.setDescription("");
+    }
+
+    public void editTitle(TaskItem tasks) {
+        tasks.setTitle("");
+    }
+
+    public void editDate(TaskItem tasks) {
+        tasks.setDue_Date("");
     }
 
 
