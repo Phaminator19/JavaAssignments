@@ -1,5 +1,8 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -22,6 +25,7 @@ public class App {
 //    class called TaskList. App class will handle the user interaction.
 //
     private static Scanner userInput = new Scanner (System.in);
+    private DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
     private final TaskList list;
 
     private App() {
@@ -68,15 +72,29 @@ public class App {
 
             while (reader.hasNext())
             {
-                TaskItem myItem = new TaskItem("Test", "placeholder", "2001-09-11");
-                myItem.setTitle(reader.nextLine());
-                myItem.setDescription(reader.nextLine());
-                myItem.setDue_Date(reader.nextLine());
+                TaskItem myItem = new TaskItem("Test", "2001-09-11", "placeholder");
+                String date = reader.next();
+
+                String title = reader.next();
+                String description = reader.next();
+
+                myItem.setTitle(title);
+                myItem.setDescription(description);
+
+                myItem.setDue_Date(date);
+
                 list.addTask(myItem);
+
+                if (list.size() <= 0) {
+                    System.out.println("Empty list");
+                }
             }
         } catch (FileNotFoundException e) {
-            System.out.println("File does not found. Please try again");
+            System.out.println("WARNING: File does not found. Please try again");
+        } catch (IllegalArgumentException ex) {
+            System.out.println("WARNING: Title or Date is wrong or something. Please double check");
         }
+        Main_menu();
     }
 
     private void List_Operation_menu() {

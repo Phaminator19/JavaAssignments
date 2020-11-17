@@ -104,7 +104,7 @@ public class TaskList {
         try (Formatter output = new Formatter(filename)) {
             for (int i = 0; i < list.size(); i++) {
                 TaskItem data = getTaskItem(i);
-                output.format("%s: %s %s%n", data.getTitle(), data.getDescription(), data.getDue_Date());
+                output.format("%s %s %s%n", data.getTitle(), data.getDescription(), data.getDue_Date());
             }
 
         } catch (FileNotFoundException ex) {
@@ -113,6 +113,8 @@ public class TaskList {
             ex.printStackTrace();
         }
     }
+
+
 
     public void MarkAsComplete(TaskItem taskItem) {
         try {
