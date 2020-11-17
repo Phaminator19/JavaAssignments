@@ -2,28 +2,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class App {
-//    This program is designed to make a to-do list
-//    It will contain a 0 or more task times and will has a a Title
-//    This Title shall be 1 or more characters in length
-//    It will also contain a Description that will be 0 or more characters in length
-//    And finally, it will has Due Date in the format of YYYY-MM-DD
-//
-//    Scenario: Quang usually forgot to do the homework, and he also has alot of other stuff going
-//    on at the same time. Quang wants to be productive and stay on track to things so that he
-//    will not get point deduction because he didn't do his works. Therefore, he needs a task list that
-//    can remind him at a specific day so that he can get prepared to do it. So he begins to create a to-do
-//    list program and he will Title it as "Quang_Personal_To_do_List" The program asks if he wishes to enter additional
-//    information. Quang will continues to enter the information until he ke tells the program that he done
-//    After he done, the program writes all the data to a file.
-//
-//    The program needs encapsulate item data in a class called TaskItem and list data in a
-//    class called TaskList. App class will handle the user interaction.
-//
+
     private static Scanner userInput = new Scanner (System.in);
     private DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
     private final TaskList list;

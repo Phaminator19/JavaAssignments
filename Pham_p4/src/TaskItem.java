@@ -1,7 +1,7 @@
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+
 
 public class TaskItem {
     DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
@@ -72,10 +72,6 @@ public class TaskItem {
             validity = false;
         }
         return validity;
-    }
-
-    public void DateConversion (String date) {
-        dateformat.format(date);
     }
 
 class InvalidTitleException extends IllegalArgumentException {
