@@ -1,4 +1,4 @@
-public class ContactApp extends  TaskApp{
+public class ContactApp{
 
 
 }
