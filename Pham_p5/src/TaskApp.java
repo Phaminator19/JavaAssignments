@@ -5,13 +5,13 @@ import java.text.SimpleDateFormat;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class App {
+public class TaskApp {
 
     private static Scanner userInput = new Scanner (System.in);
     private DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
     private final TaskList list;
 
-    private App() {
+    private TaskApp() {
         list = new TaskList();
     }
 
@@ -319,9 +319,9 @@ public class App {
     }
 
     public static void main (String[] args) {
-        App app = new App();
+        TaskApp taskApp = new TaskApp();
 
-        app.Main_menu();
+        taskApp.Main_menu();
         System.out.println("Thank you for using me. Goodbye!");
     }
 }
