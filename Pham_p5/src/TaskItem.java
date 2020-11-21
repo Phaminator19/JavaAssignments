@@ -8,6 +8,7 @@ public class TaskItem {
     private String Title;
     private String Description;
     private String Due_Date;
+
     public TaskItem(String Title, String Due_Date, String Description)
     {
         if (isTitleValid(Title)) {
@@ -37,6 +38,28 @@ public class TaskItem {
         if (isDueDateCorrectFormat(date)) {
             this.Due_Date = date;
         } else throw new InvalidDateException("Warning: New date is not in the correct format. It did not save the new date");
+    }
+
+    public void edit(String title, String date, String Description) {
+        try {
+            setTitle(title);
+            setDescription(Description);
+            setDue_Date(date);
+        } catch (IllegalArgumentException err) {
+            throw new IllegalArgumentException("WARNING: Task is not created. Title or Date isn't correct");
+        }
+    }
+
+    public void editDescription(String Description) {
+        setDescription(Description);
+    }
+
+    public void editTitle(String title) {
+            setTitle(title);
+    }
+
+    public void editDate(String date) {
+        setDue_Date(date);
     }
 
     public String getTitle () {
@@ -74,13 +97,13 @@ public class TaskItem {
         return validity;
     }
 
-class InvalidTitleException extends IllegalArgumentException {
+static class InvalidTitleException extends IllegalArgumentException {
         public InvalidTitleException (String msg) {
             super(msg);
         }
 }
 
-class InvalidDateException extends IllegalArgumentException {
+static class InvalidDateException extends IllegalArgumentException {
         public InvalidDateException(String msg) {
             super(msg);
         }

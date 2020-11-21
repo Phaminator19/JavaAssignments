@@ -67,28 +67,6 @@ public class TaskList {
         return list.get(index).getDue_Date();
     }
 
-    public void edit(String title, String date, String Description, TaskItem tasks) {
-        try {
-            tasks.setTitle(title);
-            tasks.setDescription(Description);
-            tasks.setDue_Date(date);
-        } catch (IllegalArgumentException err) {
-            throw new IllegalArgumentException("WARNING: Task is not created. Title or Date isn't correct");
-        }
-    }
-
-    public void editDescription(TaskItem tasks) {
-        tasks.setDescription("");
-    }
-
-    public void editTitle(TaskItem tasks) {
-        tasks.setTitle("");
-    }
-
-    public void editDate(TaskItem tasks) {
-        tasks.setDue_Date("");
-    }
-
 
     public void UnmarkAsComplete(TaskItem testItem) {
         try {

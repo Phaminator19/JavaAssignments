@@ -217,7 +217,7 @@ public class TaskApp {
                     String date = createTaskDueDate();
                     String description = createTaskDescription();
 
-                    list.edit(title, date, description, minhAnh);
+                    minhAnh.edit(title, date, description);
 
                     System.out.println("Your task is successfully edited! Returning...");
                     continueLoop = false;
