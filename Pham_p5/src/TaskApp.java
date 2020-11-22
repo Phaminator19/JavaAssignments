@@ -326,6 +326,7 @@ public class TaskApp {
         TaskApp taskApp = new TaskApp();
 
         taskApp.Main_menu();
+
         System.out.println("Thank you for using me. Goodbye!");
     }
 }
