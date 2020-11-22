@@ -70,7 +70,7 @@ public class TaskList {
 
     public void UnmarkAsComplete(TaskItem testItem) {
         try {
-            String temp = testItem.getTitle().replace("[Completed] ", "");
+            String temp = testItem.getTitle().replace("[Completed]", "");
             testItem.setTitle(temp);
         } catch (Exception err) {
         err.printStackTrace();
@@ -79,6 +79,7 @@ public class TaskList {
     }
 
     public void write(String filename) {
+
         try (Formatter output = new Formatter(filename)) {
             for (int i = 0; i < AppList.size(); i++) {
                 TaskItem data = getTaskItem(i);
@@ -97,7 +98,7 @@ public class TaskList {
     public void MarkAsComplete(TaskItem taskItem) {
         try {
             if (taskItem != null) {
-                taskItem.setTitle("[Completed] " + taskItem.getTitle());
+                taskItem.setTitle("[Completed]" + taskItem.getTitle());
             }
         } catch (Exception err) {
             err.printStackTrace();

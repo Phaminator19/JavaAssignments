@@ -56,33 +56,36 @@ public class TaskApp {
             while (reader.hasNext())
             {
                 TaskItem myItem = new TaskItem("Test", "2001-09-11", "placeholder");
-                String date = reader.next();
 
                 String title = reader.next();
                 String description = reader.next();
+                String date = reader.next();
 
                 myItem.setTitle(title);
                 myItem.setDescription(description);
-
                 myItem.setDue_Date(date);
 
                 list.addTask(myItem);
 
+                System.out.println("File is successfully loaded into the program. Returning to the Main Menu...");
+
                 if (list.size() <= 0) {
-                    System.out.println("Empty list");
+                    System.out.println("Empty list! Returning to the Main Menu...");
                 }
             }
         } catch (FileNotFoundException e) {
             System.out.println("WARNING: File does not found. Please try again");
-        } catch (IllegalArgumentException ex) {
-            System.out.println("WARNING: Title or Date is wrong or something. Please double check");
+        } catch (TaskItem.InvalidTitleException ex) {
+            System.out.println("WARNING: Title is not at least 1 string long. Please double check. File did not save.");
+        }  catch (TaskItem.InvalidDateException ex) {
+            System.out.println("WARNING: Date is in wrong format. Please double check. File did not save.");
         }
         Main_menu();
     }
 
     private void List_Operation_menu() {
         System.out.println("List Operation Menu");
-        System.out.println(("--------------------"));
+        System.out.println(("------------------"));
             int choice = askOtherOptions();
 
             if (choice == 1) {
@@ -219,29 +222,30 @@ public class TaskApp {
 
                     minhAnh.edit(title, date, description);
 
-                    System.out.println("Your task is successfully edited! Returning...");
+                    System.out.println("Your task is successfully edited! Returning...\n");
                     continueLoop = false;
 
                 } catch (TaskItem.InvalidTitleException err) {
-                    System.err.printf("%nException: %s%n", err);
                     userInput.nextLine();
-                    System.out.println("Warning: your Title was invalid, please double check it and try again");
+                    System.out.println("Warning: Your Title was not at least 1 string log. Please double check it and try again. Task was not edited.");
+                    Current_task();
 
                 } catch (TaskItem.InvalidDateException err) {
-                    System.err.printf("%nException: %s%n", err);
                     userInput.nextLine();
-                    System.out.println("Warning: Your Date was invalid, please double check it and try again");
+                    System.out.println("Warning: Your Date was invalid format. Please double check it and try again. Task was not edited.");
+                    Current_task();
                 } catch (IndexOutOfBoundsException outOfBoundsException) {
-                    System.err.printf("%nException: %s%n", outOfBoundsException);
-                    System.out.println("Your chosen task-list isn't exist, try again with the given number.");
+                    System.out.println("Your chosen task-list isn't exist.");
                     userInput.nextLine();
+                    Current_task();
                 } catch (InputMismatchException ex) {
-                    System.err.printf("%nException: %s%n", ex);
                     userInput.nextLine(); //this will discard string input to let the user try again.
-                    System.out.printf("You must enter integers. Please try again. %n%n");
+                    System.out.printf("WARNING: You must enter integers. Please try again. %n%n");
+                    Current_task();
                 } catch (Exception ex2) {
-                    ex2.printStackTrace();
+                    System.out.println("WARNING: There's an error, task is not edited. Please choose which task to edit again.");
                     userInput.nextLine();
+                    Current_task();
                 }
             }while (continueLoop);
         }
@@ -258,7 +262,7 @@ public class TaskApp {
                 TaskItem minhAnh = list.getTaskItem(userInput.nextInt());
 
                 list.remove(minhAnh);
-                System.out.println("Your task is successfully removed! Returning...");
+                System.out.println("Your task is successfully removed! Returning...%n");
 
             } catch (InputMismatchException ex) {
                 System.err.printf("%nException: %s%n", ex);
@@ -278,7 +282,7 @@ public class TaskApp {
                 TaskItem minhAnh = list.getTaskItem(userInput.nextInt());
 
                 list.MarkAsComplete(minhAnh);
-                System.out.println("Your task is successfully marked as completed! Returning...");
+                System.out.println("Your task is successfully marked as completed! Returning...%n");
 
             } catch (InputMismatchException ex) {
                 System.err.printf("%nException: %s%n", ex);
@@ -299,7 +303,7 @@ public class TaskApp {
                 TaskItem minhAnh = list.getTaskItem(userInput.nextInt());
 
                 list.UnmarkAsComplete(minhAnh);
-                System.out.println("Your task is successfully un-marked as completed! Returning...");
+                System.out.println("Your task is successfully un-marked as completed! Returning...%n");
 
             } catch (InputMismatchException ex) {
                 System.err.printf("%nException: %s%n", ex);
@@ -311,10 +315,10 @@ public class TaskApp {
     }
     private void save_TaskList_output () {
         Scanner input = new Scanner(System.in);
-        System.out.print("Enter a file name: ");
-        String filename = input.nextLine()+ ".txt";
+        System.out.print("Enter a file name (no need to type .txt): ");
+        String filename = input.nextLine() + ".txt";
         list.write(filename);
-        System.out.println("Your File has successfully created and written!");
+        System.out.println("Your File is successfully created and written! Returning...%n");
         List_Operation_menu();
     }
 

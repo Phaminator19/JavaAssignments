@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 
 
 public class TaskItem {
-    DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
     private String Title;
     private String Description;
     private String Due_Date;
@@ -45,8 +44,10 @@ public class TaskItem {
             setTitle(title);
             setDescription(Description);
             setDue_Date(date);
-        } catch (IllegalArgumentException err) {
-            throw new IllegalArgumentException("WARNING: Task is not created. Title or Date isn't correct");
+        } catch (InvalidTitleException err) {
+            throw new InvalidTitleException("WARNING: Task is not edited. Title is not at least 1 string long");
+        } catch (InvalidDateException dateError) {
+            throw new InvalidDateException("WARNING: Task is not edited. Date is not in the correct format");
         }
     }
 
@@ -91,7 +92,6 @@ public class TaskItem {
             dateformat.parse(Due_Date);
             validity = true;
         }catch (ParseException e) {
-            System.out.println("Warning: The date format is incorrect");
             validity = false;
         }
         return validity;
