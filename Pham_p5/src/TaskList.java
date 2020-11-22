@@ -4,17 +4,17 @@ import java.util.Formatter;
 import java.util.List;
 
 public class TaskList {
-    List<TaskItem> list;
+    List<TaskItem> AppList;
 
     public TaskList() {
-        list = new ArrayList<>();
+        AppList = new ArrayList<>();
     }
 
     public void View_List() {
         int i = 0;
         System.out.println("Current task:");
         System.out.println("----------------");
-        for (TaskItem taskItem : list) {
+        for (TaskItem taskItem : AppList) {
             System.out.printf("%d) " + taskItem.getTitle() + ": " + taskItem.getDescription() + " due on " + taskItem.getDue_Date(), i);
             System.out.println("\n");
             i++;
@@ -22,8 +22,8 @@ public class TaskList {
     }
 
     public void View_Completed_List() {
-        for (int i = 0; i < list.size(); i++) {
-            TaskItem taskItem = list.get(i);
+        for (int i = 0; i < AppList.size(); i++) {
+            TaskItem taskItem = AppList.get(i);
             if (taskItem.getDue_Date().startsWith("[Completed] ")) {
                 System.out.println(taskItem.getTitle() + ": " + taskItem.getDescription() + " due on " + taskItem.getDue_Date());
             }
@@ -31,22 +31,22 @@ public class TaskList {
     }
 
     public void addTask(TaskItem tasks) {
-        list.add(tasks);
+        AppList.add(tasks);
     }
 
 
     public int size() {
-        return list.size();
+        return AppList.size();
     }
 
     public void remove(TaskItem tasks) {
-        list.remove(tasks);
+        AppList.remove(tasks);
     }
 
     public TaskItem getTaskItem(int index) {
         TaskItem data = null;
         try {
-            data = list.get(index);
+            data = AppList.get(index);
         } catch (IndexOutOfBoundsException error) {
             System.out.println("WARNING: The task item doesn't exist.");
         }
@@ -54,17 +54,17 @@ public class TaskList {
     }
 
     public String getTaskDescription(int index) {
-        return list.get(index).getDescription();
+        return AppList.get(index).getDescription();
     }
 
 
     public String getTaskTitle(int index) {
-        return list.get(index).getTitle();
+        return AppList.get(index).getTitle();
     }
 
 
     public String getTaskDueDate(int index) {
-        return list.get(index).getDue_Date();
+        return AppList.get(index).getDue_Date();
     }
 
 
@@ -80,7 +80,7 @@ public class TaskList {
 
     public void write(String filename) {
         try (Formatter output = new Formatter(filename)) {
-            for (int i = 0; i < list.size(); i++) {
+            for (int i = 0; i < AppList.size(); i++) {
                 TaskItem data = getTaskItem(i);
                 output.format("%s %s %s%n", data.getTitle(), data.getDescription(), data.getDue_Date());
             }
