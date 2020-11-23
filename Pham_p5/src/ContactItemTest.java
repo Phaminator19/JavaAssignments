@@ -101,28 +101,4 @@ class ContactItemTest {
         assertEquals("555-555-5555", contactItem.getPhoneNumber());
     }
 
-    @Test
-    void setFirstNameTest() {
-        ContactItem contactItem = new ContactItem("Ben", "Dover", "555-555-5555", "x@y.z");
-        assertDoesNotThrow(()->contactItem.setFirstName("Ash"));
-    }
-
-    @Test
-    void setLastNameTest() {
-        ContactItem contactItem = new ContactItem("Ben", "Dover", "555-555-5555", "x@y.z");
-        assertDoesNotThrow(()->contactItem.setLastName("Ketchum"));
-    }
-
-    @Test
-    void setEmailAddressTest() {
-        ContactItem contactItem = new ContactItem("Ben", "Dover", "555-555-5555", "x@y.z");
-        assertDoesNotThrow(()->contactItem.setEmailAddress("a@b.c"));
-    }
-
-    @Test
-    void setPhoneNumberTest() {
-        ContactItem contactItem = new ContactItem("Ben", "Dover", "555-555-5555", "x@y.z");
-        assertDoesNotThrow(()->contactItem.setPhoneNumber("321-318-9526"));
-    }
-
 }

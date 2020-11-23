@@ -36,19 +36,19 @@ public class ContactItem{
 
     }
 
-    public void setFirstName(String firstName) {
+    private void setFirstName(String firstName) {
         FirstName = firstName;
     }
 
-    public void setLastName(String lastName) {
+    private void setLastName(String lastName) {
         LastName = lastName;
     }
 
-    public void setEmailAddress(String emailAddress) {
+    private void setEmailAddress(String emailAddress) {
         EmailAddress = emailAddress;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    private void setPhoneNumber(String phoneNumber) {
         PhoneNumber = phoneNumber;
     }
 

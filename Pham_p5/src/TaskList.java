@@ -136,9 +136,9 @@ public class TaskList extends ListType{
                 String description = reader.nextLine();
                 String date = reader.nextLine();
 
-                myItem.setTitle(title);
-                myItem.setDescription(description);
-                myItem.setDue_Date(date);
+                myItem.editTitle(title);
+                myItem.editDescription(description);
+                myItem.editDate(date);
 
                 addTask(myItem);
 

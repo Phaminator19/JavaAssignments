@@ -202,8 +202,9 @@ public class TaskApp {
 
 
                     String title = createTaskTitle();
-                    String date = createTaskDueDate();
                     String description = createTaskDescription();
+                    String date = createTaskDueDate();
+
 
                     list.editConfirm(index, title, date, description);
 
@@ -315,7 +316,7 @@ public class TaskApp {
         System.out.print("Enter a file name (no need to type .txt): ");
         String filename = input.nextLine() + ".txt";
         list.write(filename);
-        System.out.println("Your File is successfully created and written! Returning...%n");
+        System.out.println("Your File is successfully created and written! Returning...\n");
         List_Operation_menu();
     }
 

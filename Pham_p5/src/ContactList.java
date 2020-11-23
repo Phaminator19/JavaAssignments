@@ -20,12 +20,12 @@ public class ContactList extends ListType{
     public void editConfirm(int index, String FirstName, String LastName, String PhoneNumber, String EmailAddress) {
         try {
             ContactItem temp = contactList.get(index);
-            temp.setFirstName(FirstName);
-            temp.setLastName(LastName);
-            temp.setEmailAddress(EmailAddress);
-            temp.setPhoneNumber(PhoneNumber);
+            temp.editContact(FirstName,LastName,PhoneNumber,EmailAddress);
         } catch (IndexOutOfBoundsException ex) {
             throw new IndexOutOfBoundsException("WARNING: The contact you try to access doesn't exist. Please try again!");
+        } catch (ContactItem.InvalidValueException err) {
+            throw new ContactItem.InvalidValueException("WARNING: There is a not at least a value that is 1 string long. " +
+                    "All blank is invalid.");
         }
     }
 
@@ -92,10 +92,7 @@ public class ContactList extends ListType{
                 String EmailAddress = reader.nextLine();
                 String PhoneNumber = reader.nextLine();
 
-                myItem.setFirstName(FirstName);
-                myItem.setLastName(LastName);
-                myItem.setEmailAddress(EmailAddress);
-                myItem.setPhoneNumber(PhoneNumber);
+                myItem.editContact(FirstName, LastName, EmailAddress, PhoneNumber);
 
                 addContactItem(myItem);
 
