@@ -181,7 +181,7 @@ public class TaskApp {
                 System.out.println("Warning: Your Date was invalid, please double check it and try again");
             } catch (InputMismatchException err) {
                 userInput.nextLine();
-                System.out.println("Please type a string date");
+                System.out.println("Please type a string date.");
             }
         } while(continueLoop);
         List_Operation_menu();
@@ -250,8 +250,11 @@ public class TaskApp {
                 } catch (InputMismatchException ex) {
                     userInput.nextLine(); //this will discard string input to let the user try again.
                     System.out.printf("You must enter integers. Please try again. %n%n");
+                    Current_task();
                 } catch (IndexOutOfBoundsException err) {
+                    userInput.nextLine();
                     System.out.println("WARNING: Your Task doesn't exist to be remove. Please try again. %n");
+                    Current_task();
                 }
             } while (continueloop);
             List_Operation_menu();
@@ -271,9 +274,11 @@ public class TaskApp {
                 } catch (InputMismatchException ex) {
                     userInput.nextLine(); //this will discard string input to let the user try again.
                     System.out.printf("You must enter integers. Please try again. %n%n");
+                    Current_task();
                 } catch (IndexOutOfBoundsException ex) {
-                    System.out.println("WARNING: Your Task doesn't exist to be remove. Please try again. %n");
+                    System.out.println("WARNING: Your Task doesn't exist to be remove. Please try again.");
                     userInput.nextLine(); //this will discard string input to let the user try again.
+                    Current_task();
                 }
             } while (continueloop);
             List_Operation_menu();
@@ -294,9 +299,11 @@ public class TaskApp {
                 } catch (InputMismatchException ex) {
                     userInput.nextLine(); //this will discard string input to let the user try again.
                     System.out.printf("You must enter integers. Please try again. %n%n");
+                    Current_task();
                 } catch (IndexOutOfBoundsException ex) {
                     System.out.println("WARNING: Your Task doesn't exist to be unmarked. Please try again. %n");
                     userInput.nextLine(); //this will discard string input to let the user try again.
+                    Current_task();
                 }
             } while (continueLoop);
             List_Operation_menu();
