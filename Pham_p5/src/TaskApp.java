@@ -219,7 +219,7 @@ public class TaskApp {
                     System.out.println("Warning: Your Date was invalid format. Please double check it and try again. Task was not edited.");
                     Current_task();
                 } catch (IndexOutOfBoundsException outOfBoundsException) {
-                    System.out.println("WARNING: Your chosen task-list isn't exist. Please try again. %n");
+                    System.out.println("WARNING: Your chosen task-list isn't exist. Please try again.");
                     userInput.nextLine();
                     Current_task();
                 } catch (InputMismatchException ex) {
@@ -245,7 +245,7 @@ public class TaskApp {
                 try {
                     System.out.println("Choose number which task would you like to remove?");
                     list.remove(userInput.nextInt());
-                    System.out.println("Your task is successfully removed! Returning...%n");
+                    System.out.println("Your task is successfully removed! Returning...");
                     continueloop = false;
                 } catch (InputMismatchException ex) {
                     userInput.nextLine(); //this will discard string input to let the user try again.
@@ -253,7 +253,7 @@ public class TaskApp {
                     Current_task();
                 } catch (IndexOutOfBoundsException err) {
                     userInput.nextLine();
-                    System.out.println("WARNING: Your Task doesn't exist to be remove. Please try again. %n");
+                    System.out.println("WARNING: Your Task doesn't exist to be remove. Please try again.");
                     Current_task();
                 }
             } while (continueloop);
@@ -269,14 +269,14 @@ public class TaskApp {
                 try {
                     System.out.println("Choose number which task would you like to mark complete?");
                     list.MarkAsComplete(userInput.nextInt());
-                    System.out.println("Your task is successfully marked as completed! Returning...%n");
+                    System.out.println("Your task is successfully marked as completed! Returning...");
                     continueloop = false;
                 } catch (InputMismatchException ex) {
                     userInput.nextLine(); //this will discard string input to let the user try again.
                     System.out.printf("You must enter integers. Please try again. %n%n");
                     Current_task();
                 } catch (IndexOutOfBoundsException ex) {
-                    System.out.println("WARNING: Your Task doesn't exist to be remove. Please try again.");
+                    System.out.println("WARNING: Your Task doesn't exist to be mark as complete. Please try again.");
                     userInput.nextLine(); //this will discard string input to let the user try again.
                     Current_task();
                 }
@@ -293,7 +293,7 @@ public class TaskApp {
                 try {
                     System.out.println("Choose number which task would you like to un-mark complete?");
                     list.UnmarkAsComplete(userInput.nextInt());
-                    System.out.println("Your task is successfully un-marked as completed! Returning...%n");
+                    System.out.println("Your task is successfully un-marked as completed! Returning...");
                     continueLoop = false;
 
                 } catch (InputMismatchException ex) {
@@ -301,7 +301,7 @@ public class TaskApp {
                     System.out.printf("You must enter integers. Please try again. %n%n");
                     Current_task();
                 } catch (IndexOutOfBoundsException ex) {
-                    System.out.println("WARNING: Your Task doesn't exist to be unmarked. Please try again. %n");
+                    System.out.println("WARNING: Your Task doesn't exist to be unmarked. Please try again.");
                     userInput.nextLine(); //this will discard string input to let the user try again.
                     Current_task();
                 }
