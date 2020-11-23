@@ -10,7 +10,7 @@ public class TaskApp {
     private DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
     private final TaskList list;
 
-    private TaskApp() {
+    public TaskApp() {
         list = new TaskList();
     }
 
@@ -23,6 +23,10 @@ public class TaskApp {
             }
             else if (choice == 2) {
                 Do_Read_user_file();
+            }
+            else {
+                Home_menu main = new Home_menu();
+                main.Select_application();
             }
     }
 
@@ -121,6 +125,8 @@ public class TaskApp {
         }
     }
 
+
+
     private void View_TaskList() {
         if(list.size() <= 0){
             System.out.println("Sorry, empty list. Maybe add some tasks instead?\n");
@@ -137,9 +143,6 @@ public class TaskApp {
         else {
             list.view();
         }
-    }
-    private void View_Completed_List() {
-        list.View_Completed_List();
     }
 
     private String createTaskTitle() {
@@ -320,11 +323,9 @@ public class TaskApp {
         List_Operation_menu();
     }
 
-    public static void main (String[] args) {
+    public void Task_application () {
         TaskApp taskApp = new TaskApp();
 
         taskApp.Main_menu();
-
-        System.out.println("Thank you for using me. Goodbye!");
     }
 }

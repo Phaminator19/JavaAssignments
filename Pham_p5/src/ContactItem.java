@@ -1,4 +1,5 @@
 public class ContactItem{
+
     private String FirstName;
     private String LastName;
     private String EmailAddress;
@@ -20,11 +21,11 @@ public class ContactItem{
         return PhoneNumber;
     }
 
-    public ContactItem(String firstname, String LastName, String PhoneNumber, String EmailAddress) {
+    public ContactItem(String firstname, String LastName, String EmailAddress, String PhoneNumber) {
             if (isValueAtLeastOne(firstname) || isValueAtLeastOne(LastName)
                     || isValueAtLeastOne(PhoneNumber) || isValueAtLeastOne(EmailAddress)) {
-                //This if case will check there is at least one string that is not blank.
-                // If all string is blank then throw an exception
+                //This if case will check there is at least one value that is not blank.
+                // If all value has blank string then throw an exception.
 
                 this.FirstName = firstname;
                 this.LastName = LastName;
@@ -53,7 +54,7 @@ public class ContactItem{
     }
 
 
-    public void editContact(String FirstName, String LastName, String PhoneNumber, String EmailAddress) {
+    public void editContact(String FirstName, String LastName, String EmailAddress, String PhoneNumber) {
             if ((isValueAtLeastOne(FirstName) || isValueAtLeastOne(LastName))
                     || (isValueAtLeastOne(PhoneNumber) || isValueAtLeastOne(EmailAddress))) {
                 setFirstName(FirstName);
@@ -70,7 +71,6 @@ public class ContactItem{
         This function will is check for many parameter. Check for at least there is one value. Otherwise return false.
         */
         return value.length() > 0;
-
     }
 
     static class InvalidValueException extends IllegalArgumentException {

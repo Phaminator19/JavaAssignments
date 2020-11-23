@@ -17,10 +17,10 @@ public class ContactList extends ListType{
         contactList.add(contactItem);
     }
 
-    public void editConfirm(int index, String FirstName, String LastName, String PhoneNumber, String EmailAddress) {
+    public void editConfirm(int index, String FirstName, String LastName, String EmailAddress, String PhoneNumber) {
         try {
             ContactItem temp = contactList.get(index);
-            temp.editContact(FirstName,LastName,PhoneNumber,EmailAddress);
+            temp.editContact(FirstName,LastName,EmailAddress,PhoneNumber);
         } catch (IndexOutOfBoundsException ex) {
             throw new IndexOutOfBoundsException("WARNING: The contact you try to access doesn't exist. Please try again!");
         } catch (ContactItem.InvalidValueException err) {
