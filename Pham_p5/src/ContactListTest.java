@@ -1,7 +1,7 @@
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+
+import java.io.FileNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -79,8 +79,18 @@ class ContactListTest {
     }
 
     @Test
-    public void savedContactListCanBeLoaded() {
+    public void savedContactListCanBeLoaded() throws FileNotFoundException {
+        ContactList contactList = new ContactList();
 
+        contactList.addContactItem(new ContactItem("Ash", "Ketchum", "407-777-7777", "a@y.z"));
+        contactList.addContactItem(new ContactItem("Brian", "Angel", "555-555-5555",
+                "a@z.m"));
+
+        contactList.write("contact.txt");
+        contactList.load("contact.txt");
+
+        assertEquals("Ash Ketchum , Email Address: a@y.z , Phone Number: 407-777-7777", contactList.getContactText(0));
+        assertEquals("Brian Angel , Email Address: a@z.m , Phone Number: 555-555-5555", contactList.getContactText(1));
     }
 
 

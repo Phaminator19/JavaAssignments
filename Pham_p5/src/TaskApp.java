@@ -126,7 +126,7 @@ public class TaskApp {
             System.out.println("Sorry, empty list. Maybe add some tasks instead?\n");
         }
         else {
-            list.View_List();
+            list.view();
         }
         List_Operation_menu();
     }
@@ -135,7 +135,7 @@ public class TaskApp {
             System.out.println("Sorry, empty list. Maybe add some tasks instead?\n");
         }
         else {
-            list.View_List();
+            list.view();
         }
     }
     private void View_Completed_List() {
