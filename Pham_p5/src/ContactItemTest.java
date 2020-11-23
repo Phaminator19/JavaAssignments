@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 class ContactItemTest {
     @Test
     public void creationFailsWithAllBlankValues() {
-        assertThrows(IllegalArgumentException.class, () -> new ContactItem("", "", "", ""));
+        assertThrows(ContactItem.InvalidValueException.class, () -> new ContactItem("", "", "", ""));
     }
 
     @Test
@@ -38,7 +38,7 @@ class ContactItemTest {
     @Test
     public void editingFailsWithAllBlankValues() {
         ContactItem contactItem = new ContactItem("Ben", "Dover", "555-555-5555", "x@y.z");
-        assertThrows(IllegalArgumentException.class, () -> contactItem.editContact( "", "", "", ""));
+        assertThrows(ContactItem.InvalidValueException.class, () -> contactItem.editContact( "", "", "", ""));
     }
 
     @Test
@@ -75,6 +75,54 @@ class ContactItemTest {
     public void testToString() {
         ContactItem contactItem = new ContactItem("Ben", "Dover", "555-555-5555", "x@y.z");
         assertDoesNotThrow(contactItem::toString);
+    }
+
+    @Test
+    public void getFirstNameTest() {
+        ContactItem contactItem = new ContactItem("Ben", "Dover", "555-555-5555", "x@y.z");
+        assertEquals("Ben", contactItem.getFirstName());
+    }
+
+    @Test
+    public void getLastNameTest() {
+        ContactItem contactItem = new ContactItem("Ben", "Dover", "555-555-5555", "x@y.z");
+        assertEquals("Dover", contactItem.getLastName());
+    }
+
+    @Test
+    public void getEmailAddressTest() {
+        ContactItem contactItem = new ContactItem("Ben", "Dover", "555-555-5555", "x@y.z");
+        assertEquals("x@y.z", contactItem.getEmailAddress());
+    }
+
+    @Test
+    void getPhoneNumberTest() {
+        ContactItem contactItem = new ContactItem("Ben", "Dover", "555-555-5555", "x@y.z");
+        assertEquals("555-555-5555", contactItem.getPhoneNumber());
+    }
+
+    @Test
+    void setFirstNameTest() {
+        ContactItem contactItem = new ContactItem("Ben", "Dover", "555-555-5555", "x@y.z");
+        assertDoesNotThrow(()->contactItem.setFirstName("Ash"));
+    }
+
+    @Test
+    void setLastNameTest() {
+        ContactItem contactItem = new ContactItem("Ben", "Dover", "555-555-5555", "x@y.z");
+        assertDoesNotThrow(()->contactItem.setLastName("Ketchum"));
+    }
+
+    @Test
+    void setEmailAddressTest() {
+        ContactItem contactItem = new ContactItem("Ben", "Dover", "555-555-5555", "x@y.z");
+        assertDoesNotThrow(()->contactItem.setEmailAddress("a@b.c"));
+    }
+
+    @Test
+    void setPhoneNumberTest() {
+        ContactItem contactItem = new ContactItem("Ben", "Dover", "555-555-5555", "x@y.z");
+        assertDoesNotThrow(()->contactItem.setPhoneNumber("321-318-9526"));
     }
 
 }
