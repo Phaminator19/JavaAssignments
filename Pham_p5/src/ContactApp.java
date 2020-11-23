@@ -114,8 +114,13 @@ public class ContactApp{
         Scanner input = new Scanner(System.in);
         System.out.print("Enter a file name (no need to type .txt): ");
         String filename = input.nextLine() + ".txt";
-        contacts.write(filename);
-        System.out.println("Your File is successfully created and written! Returning...\n");
+        if (contacts.size() > 0) {
+            contacts.write(filename);
+            System.out.printf("Your File is successfully created and written! Returning...%n");
+        }
+        else {
+            System.out.printf("Contact list is empty. No save. Returning...%n");
+        }
         List_Operation_menu();
     }
 

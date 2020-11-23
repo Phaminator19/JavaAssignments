@@ -318,8 +318,14 @@ public class TaskApp {
         Scanner input = new Scanner(System.in);
         System.out.print("Enter a file name (no need to type .txt): ");
         String filename = input.nextLine() + ".txt";
-        list.write(filename);
-        System.out.println("Your File is successfully created and written! Returning...\n");
+        if (list.size() > 0) {
+            list.write(filename);
+            System.out.printf("Your File is successfully created and written! Returning...%n");
+        }
+        else {
+            System.out.printf("Task list is empty. No save. Returning...%n");
+        }
+
         List_Operation_menu();
     }
 
