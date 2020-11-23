@@ -1,7 +1,9 @@
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
+import java.util.Scanner;
 
 public class TaskList {
     List<TaskItem> AppList;
@@ -22,6 +24,7 @@ public class TaskList {
     }
 
     public void View_Completed_List() {
+        System.out.printf("Completed List:%n" + "------------ %n");
         for (int i = 0; i < AppList.size(); i++) {
             TaskItem taskItem = AppList.get(i);
             if (taskItem.getDue_Date().startsWith("[Completed] ")) {
@@ -34,13 +37,12 @@ public class TaskList {
         AppList.add(tasks);
     }
 
-
     public int size() {
         return AppList.size();
     }
 
-    public void remove(TaskItem tasks) {
-        AppList.remove(tasks);
+    public void remove(int index) {
+        AppList.remove(AppList.get(index));
     }
 
     public TaskItem getTaskItem(int index) {
@@ -54,27 +56,51 @@ public class TaskList {
     }
 
     public String getTaskDescription(int index) {
-        return AppList.get(index).getDescription();
+        try {
+            return AppList.get(index).getDescription();
+        } catch (IndexOutOfBoundsException error) {
+            throw new IndexOutOfBoundsException("WARNING: The task item doesn't exist. Try again.");
+        }
     }
-
 
     public String getTaskTitle(int index) {
-        return AppList.get(index).getTitle();
+        try {
+            return AppList.get(index).getTitle();
+        } catch (IndexOutOfBoundsException error) {
+            throw new IndexOutOfBoundsException("Warning: The task item doesn't exist. Try again.");
+        }
     }
-
 
     public String getTaskDueDate(int index) {
-        return AppList.get(index).getDue_Date();
+        try {
+            return AppList.get(index).getDue_Date();
+        } catch (IndexOutOfBoundsException error) {
+            throw new IndexOutOfBoundsException("WARNING: The task item doesn't exist. Try again");
+        }
     }
 
-
-    public void UnmarkAsComplete(TaskItem testItem) {
+    public void UnmarkAsComplete(int index) {
         try {
-            String temp = testItem.getTitle().replace("[Completed]", "");
-            testItem.setTitle(temp);
-        } catch (Exception err) {
-        err.printStackTrace();
-        System.out.println("Error: Task Item isn't exist");
+            TaskItem item = AppList.get(index);
+            String temp = item.getTitle().replace("[Completed] ", "");
+            item.setTitle(temp);
+        } catch (IndexOutOfBoundsException err) {
+            throw new IndexOutOfBoundsException("Error: The task item doesn't exist. Cannot be unmarked");
+        }
+    }
+
+    public void editConfirm(int index, String title, String date, String Description) {
+        try {
+            TaskItem temp = AppList.get(index);
+            temp.editTitle(title);
+            temp.editDescription(Description);
+            temp.editDate(date);
+        } catch (TaskItem.InvalidTitleException err) {
+            throw new TaskItem.InvalidTitleException("WARNING: Task is not edited. Title is not at least 1 string long");
+        } catch (TaskItem.InvalidDateException dateError) {
+            throw new TaskItem.InvalidDateException("WARNING: Task is not edited. Date is not in the correct format");
+        } catch (IndexOutOfBoundsException ex) {
+            throw new IndexOutOfBoundsException("ERROR: The Task doesn't exist to be edited. Please try again.");
         }
     }
 
@@ -83,7 +109,7 @@ public class TaskList {
         try (Formatter output = new Formatter(filename)) {
             for (int i = 0; i < AppList.size(); i++) {
                 TaskItem data = getTaskItem(i);
-                output.format("%s %s %s%n", data.getTitle(), data.getDescription(), data.getDue_Date());
+                output.format("%s%n%s%n%s%n", data.getTitle(), data.getDescription(), data.getDue_Date());
             }
 
         } catch (FileNotFoundException ex) {
@@ -93,17 +119,49 @@ public class TaskList {
         }
     }
 
-
-
-    public void MarkAsComplete(TaskItem taskItem) {
+    public void MarkAsComplete(int index) {
         try {
-            if (taskItem != null) {
-                taskItem.setTitle("[Completed]" + taskItem.getTitle());
+            TaskItem temp = AppList.get(index);
+            if (temp != null) {
+                temp.setTitle("[Completed] " + temp.getTitle());
             }
-        } catch (Exception err) {
-            err.printStackTrace();
-            System.out.println("Error: Task Item isn't exist");
+        } catch (IndexOutOfBoundsException err) {
+            throw new IndexOutOfBoundsException("Error: Task Item isn't exist");
         }
+    }
+
+    public void load(String filename) throws FileNotFoundException {
+        try {
+
+            File myObj = new File(filename);
+            Scanner reader = new Scanner(myObj);
+
+            while (reader.hasNextLine()) {
+                TaskItem myItem = new TaskItem("Test", "2001-09-11", "placeholder");
+
+                String title = reader.nextLine();
+                String description = reader.nextLine();
+                String date = reader.nextLine();
+
+                myItem.setTitle(title);
+                myItem.setDescription(description);
+                myItem.setDue_Date(date);
+
+                addTask(myItem);
+
+            }
+        } catch (FileNotFoundException error) {
+            throw new FileNotFoundException("WARNING: File does not found. Please try again and double check.");
+        } catch (TaskItem.InvalidTitleException error) {
+            throw new TaskItem.InvalidTitleException("Warning: Title is not at least 1 string long.");
+        } catch (TaskItem.InvalidDateException error) {
+            throw new TaskItem.InvalidDateException("Warning: Date is not in the correct format.");
+        }
+    }
+
+    public String getTaskText(int index) {
+        TaskItem item = AppList.get(index);
+        return item.getTitle() + " " + item.getDescription() + " " + item.getDue_Date() + "%n";
     }
 }
 

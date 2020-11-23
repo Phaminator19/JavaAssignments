@@ -1,4 +1,3 @@
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -50,29 +49,15 @@ public class TaskApp {
         try {
             System.out.print("What is your file name called (no need to type .txt)? ");
             String filename = input.nextLine() + ".txt";
-            File myObj = new File(filename);
-            Scanner reader = new Scanner (myObj);
 
-            while (reader.hasNext())
-            {
-                TaskItem myItem = new TaskItem("Test", "2001-09-11", "placeholder");
+            list.load(filename);
 
-                String title = reader.next();
-                String description = reader.next();
-                String date = reader.next();
+            System.out.println("File is successfully loaded into the program.");
 
-                myItem.setTitle(title);
-                myItem.setDescription(description);
-                myItem.setDue_Date(date);
-
-                list.addTask(myItem);
-
-                System.out.println("File is successfully loaded into the program. Returning to the Main Menu...");
-
-                if (list.size() <= 0) {
-                    System.out.println("Empty list! Returning to the Main Menu...");
-                }
+            if (list.size() <= 0) {
+                System.out.println("Sorry, it's an empty list! Returning to the Main Menu...");
             }
+
         } catch (FileNotFoundException e) {
             System.out.println("WARNING: File does not found. Please try again");
         } catch (TaskItem.InvalidTitleException ex) {
@@ -214,13 +199,13 @@ public class TaskApp {
                 try {
                     System.out.println("Choose number which task would you like to edit?");
                     int index = userInput.nextInt();
-                    TaskItem minhAnh = list.getTaskItem(index);
+
 
                     String title = createTaskTitle();
                     String date = createTaskDueDate();
                     String description = createTaskDescription();
 
-                    minhAnh.edit(title, date, description);
+                    list.editConfirm(index, title, date, description);
 
                     System.out.println("Your task is successfully edited! Returning...\n");
                     continueLoop = false;
@@ -229,13 +214,12 @@ public class TaskApp {
                     userInput.nextLine();
                     System.out.println("Warning: Your Title was not at least 1 string log. Please double check it and try again. Task was not edited.");
                     Current_task();
-
                 } catch (TaskItem.InvalidDateException err) {
                     userInput.nextLine();
                     System.out.println("Warning: Your Date was invalid format. Please double check it and try again. Task was not edited.");
                     Current_task();
                 } catch (IndexOutOfBoundsException outOfBoundsException) {
-                    System.out.println("Your chosen task-list isn't exist.");
+                    System.out.println("WARNING: Your chosen task-list isn't exist. Please try again. %n");
                     userInput.nextLine();
                     Current_task();
                 } catch (InputMismatchException ex) {
@@ -256,63 +240,69 @@ public class TaskApp {
     private void remove_Task_item() {
         Current_task();
         if (list.size() > 0) {
-            try {
-                userInput.nextLine();
-                System.out.println("Choose number which task would you like to remove?");
-                TaskItem minhAnh = list.getTaskItem(userInput.nextInt());
-
-                list.remove(minhAnh);
-                System.out.println("Your task is successfully removed! Returning...%n");
-
-            } catch (InputMismatchException ex) {
-                System.err.printf("%nException: %s%n", ex);
-                userInput.nextLine(); //this will discard string input to let the user try again.
-                System.out.printf("You must enter integers. Please try again. %n%n");
-            }
+            boolean continueloop = true;
+            do {
+                try {
+                    System.out.println("Choose number which task would you like to remove?");
+                    list.remove(userInput.nextInt());
+                    System.out.println("Your task is successfully removed! Returning...%n");
+                    continueloop = false;
+                } catch (InputMismatchException ex) {
+                    userInput.nextLine(); //this will discard string input to let the user try again.
+                    System.out.printf("You must enter integers. Please try again. %n%n");
+                } catch (IndexOutOfBoundsException err) {
+                    System.out.println("WARNING: Your Task doesn't exist to be remove. Please try again. %n");
+                }
+            } while (continueloop);
+            List_Operation_menu();
         }
-        List_Operation_menu();
     }
 
     private void mark_Task_completed () {
         Current_task();
         if (list.size() > 0) {
-            try {
-                userInput.nextLine();
-                System.out.println("Choose number which task would you like to mark complete?");
-                TaskItem minhAnh = list.getTaskItem(userInput.nextInt());
-
-                list.MarkAsComplete(minhAnh);
-                System.out.println("Your task is successfully marked as completed! Returning...%n");
-
-            } catch (InputMismatchException ex) {
-                System.err.printf("%nException: %s%n", ex);
-                userInput.nextLine(); //this will discard string input to let the user try again.
-                System.out.printf("You must enter integers. Please try again. %n%n");
-            }
-        }
-            View_Completed_List();
+            boolean continueloop = true;
+            do {
+                try {
+                    System.out.println("Choose number which task would you like to mark complete?");
+                    list.MarkAsComplete(userInput.nextInt());
+                    System.out.println("Your task is successfully marked as completed! Returning...%n");
+                    continueloop = false;
+                } catch (InputMismatchException ex) {
+                    userInput.nextLine(); //this will discard string input to let the user try again.
+                    System.out.printf("You must enter integers. Please try again. %n%n");
+                } catch (IndexOutOfBoundsException ex) {
+                    System.out.println("WARNING: Your Task doesn't exist to be remove. Please try again. %n");
+                    userInput.nextLine(); //this will discard string input to let the user try again.
+                }
+            } while (continueloop);
             List_Operation_menu();
+        }
     }
 
     private void Unmark_Task_Completed() {
         Current_task();
         if (list.size() > 0) {
-            try {
-                userInput.nextLine();
-                System.out.println("Choose number which task would you like to un-mark complete?");
-                TaskItem minhAnh = list.getTaskItem(userInput.nextInt());
+            boolean continueLoop = true;
+            do {
+                try {
+                    System.out.println("Choose number which task would you like to un-mark complete?");
+                    list.UnmarkAsComplete(userInput.nextInt());
+                    System.out.println("Your task is successfully un-marked as completed! Returning...%n");
+                    continueLoop = false;
 
-                list.UnmarkAsComplete(minhAnh);
-                System.out.println("Your task is successfully un-marked as completed! Returning...%n");
-
-            } catch (InputMismatchException ex) {
-                System.err.printf("%nException: %s%n", ex);
-                userInput.nextLine(); //this will discard string input to let the user try again.
-                System.out.printf("You must enter integers. Please try again. %n%n");
-            }
+                } catch (InputMismatchException ex) {
+                    userInput.nextLine(); //this will discard string input to let the user try again.
+                    System.out.printf("You must enter integers. Please try again. %n%n");
+                } catch (IndexOutOfBoundsException ex) {
+                    System.out.println("WARNING: Your Task doesn't exist to be unmarked. Please try again. %n");
+                    userInput.nextLine(); //this will discard string input to let the user try again.
+                }
+            } while (continueLoop);
+            List_Operation_menu();
         }
-        List_Operation_menu();
     }
+
     private void save_TaskList_output () {
         Scanner input = new Scanner(System.in);
         System.out.print("Enter a file name (no need to type .txt): ");

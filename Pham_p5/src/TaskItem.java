@@ -17,8 +17,8 @@ public class TaskItem {
         if (isDueDateValid(Due_Date)) {
             if(isDueDateCorrectFormat(Due_Date)) {
                 this.Due_Date = Due_Date;
-            }else throw new InvalidDateException("WARNING: Due date is incorrect, task is not created");
-        }else throw new InvalidDateException("WARNING: Due date is empty, task is not created");
+            }else throw new InvalidDateException("WARNING: Due date is incorrect, task is not created%n");
+        }else throw new InvalidDateException("WARNING: Due date is empty, task is not created%n");
 
         this.Description = Description;
     }
@@ -37,18 +37,6 @@ public class TaskItem {
         if (isDueDateCorrectFormat(date)) {
             this.Due_Date = date;
         } else throw new InvalidDateException("Warning: New date is not in the correct format. It did not save the new date");
-    }
-
-    public void edit(String title, String date, String Description) {
-        try {
-            setTitle(title);
-            setDescription(Description);
-            setDue_Date(date);
-        } catch (InvalidTitleException err) {
-            throw new InvalidTitleException("WARNING: Task is not edited. Title is not at least 1 string long");
-        } catch (InvalidDateException dateError) {
-            throw new InvalidDateException("WARNING: Task is not edited. Date is not in the correct format");
-        }
     }
 
     public void editDescription(String Description) {
@@ -84,7 +72,6 @@ public class TaskItem {
     }
 
     private boolean isDueDateCorrectFormat(String Due_Date) {
-
         boolean validity;
         try {
             DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
